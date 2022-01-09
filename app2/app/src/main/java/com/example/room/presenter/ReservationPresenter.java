@@ -34,5 +34,7 @@ public class ReservationPresenter {
 
         SharedPreferences getSharedPreferences();
         void parseRoomData(List<Room> rooms);
+        void createDateDialog();
+        void setDate(int year, int month, int day);
     }
 }

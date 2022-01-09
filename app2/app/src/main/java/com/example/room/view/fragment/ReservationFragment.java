@@ -84,30 +84,16 @@ public class ReservationFragment extends Fragment implements ReservationPresente
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Dialog,
-                        dateSetListener, year, month + 1, day);
-
-                dialog.show();
+                createDateDialog();
             }
         });
 
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                month += 1;
-                Log.d("", "OnDateSet: yyyy-mm-dd: " + year + "-" + month + "-" + day);
-                String date = year + "-" + month + "-" + day;
-                datePicker.setText(date);
-                selectedDate = datePicker.getText().toString();
+                setDate(year, month, day);
             }
         };
-
 
         reservationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,5 +123,28 @@ public class ReservationFragment extends Fragment implements ReservationPresente
             roomId.add(rooms.get(i).getId());
             roomName.add(rooms.get(i).getName());
         }
+    }
+
+    @Override
+    public void createDateDialog() {
+        Calendar calendar = Calendar.getInstance();
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Dialog,
+                dateSetListener, year, month + 1, day);
+
+        dialog.show();
+    }
+
+    @Override
+    public void setDate(int year, int month, int day) {
+        month += 1;
+        Log.d("", "OnDateSet: yyyy-mm-dd: " + year + "-" + month + "-" + day);
+        String date = year + "-" + month + "-" + day;
+        datePicker.setText(date);
+        selectedDate = datePicker.getText().toString();
     }
 }

@@ -26,6 +26,6 @@ public class ProfilePresenter {
     public interface View {
 
         SharedPreferences getSharedPreferences();
-        void refreshEvent();
+        void refreshEventLogic();
     }
 }

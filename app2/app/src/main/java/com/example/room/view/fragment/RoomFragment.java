@@ -18,17 +18,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
-import com.example.room.adapter.RoomAdapter;
 import com.example.room.databinding.FragmentRoomBinding;
-import com.example.room.gateways.Gateway;
+import com.example.room.presenter.RoomPresenter;
 import com.example.room.view.activity.RoomActivity;
 
 import java.util.ArrayList;
 
-public class RoomFragment extends Fragment {
+public class RoomFragment extends Fragment implements RoomPresenter.View {
 
+    private RoomPresenter presenter;
     private FragmentRoomBinding binding;
-    private Context context;
     private Button addRoom;
     private Button getAllRooms;
     private EditText nameTextView;
@@ -38,35 +37,30 @@ public class RoomFragment extends Fragment {
     private ArrayList<String> roomName, roomPrice, roomDescription;
     private ImageView emptyImageView;
     private TextView emptyTextView;
-    private RoomAdapter roomAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        context = getActivity();
         binding = FragmentRoomBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        init(root);
+        roomName = new ArrayList<>();
+        roomPrice = new ArrayList<>();
+        roomDescription = new ArrayList<>();
 
-        Gateway gateway = new Gateway();
-        String token = getToken();
+        addRoom = root.findViewById(R.id.add_room_button);
+        getAllRooms = root.findViewById(R.id.view_rooms_button);
+        nameTextView = root.findViewById(R.id.room_name_edit);
+        descriptionTextView = root.findViewById(R.id.room_description_edit);
+        priceTextView = root.findViewById(R.id.room_price_edit);
+        recyclerView = root.findViewById(R.id.room_recyclerview);
+        emptyImageView = root.findViewById(R.id.empty_room_imageView);
+        emptyTextView = root.findViewById(R.id.empty_room_textView);
+
+        presenter = new RoomPresenter(this);
 
         addRoom.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(!nameTextView.getText().toString().matches("") ||
-                   !descriptionTextView.getText().toString().matches("") ||
-                   !priceTextView.getText().toString().matches(""))
-                {
-                    gateway.addRoom(token, nameTextView.getText().toString(), descriptionTextView.getText().toString(),
-                            Long.parseLong(priceTextView.getText().toString()));
-
-                    Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(context, "Empty field", Toast.LENGTH_SHORT).show();
-                }
-
-
+                addRoomEventLogic();
             }
         });
 
@@ -80,29 +74,31 @@ public class RoomFragment extends Fragment {
         return root;
     }
 
-    private String getToken() {
-        SharedPreferences preferences = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("token", null);
-    }
-
-    private void init(View root) {
-        roomName = new ArrayList<>();
-        roomPrice = new ArrayList<>();
-        roomDescription = new ArrayList<>();
-
-        addRoom = root.findViewById(R.id.add_room_button);
-        getAllRooms = root.findViewById(R.id.view_rooms_button);
-        nameTextView = root.findViewById(R.id.room_name_edit);
-        descriptionTextView = root.findViewById(R.id.room_description_edit);
-        priceTextView = root.findViewById(R.id.room_price_edit);
-        recyclerView = root.findViewById(R.id.room_recyclerview);
-        emptyImageView = root.findViewById(R.id.empty_room_imageView);
-        emptyTextView = root.findViewById(R.id.empty_room_textView);
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void addRoomEventLogic() {
+        if(!nameTextView.getText().toString().matches("") ||
+           !descriptionTextView.getText().toString().matches("") ||
+           !priceTextView.getText().toString().matches(""))
+        {
+            presenter.addRoom(getSharedPreferences().getString("token", null),
+                    nameTextView.getText().toString(), descriptionTextView.getText().toString(),
+                    Long.parseLong(priceTextView.getText().toString()));
+
+            Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -16,42 +16,33 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentInstrumentBinding;
-import com.example.room.gateways.Gateway;
+import com.example.room.presenter.InstrumentPresenter;
 import com.example.room.view.activity.InstrumentActivity;
 
-public class InstrumentFragment extends Fragment {
+public class InstrumentFragment extends Fragment implements InstrumentPresenter.View {
 
+    private InstrumentPresenter presenter;
     private FragmentInstrumentBinding binding;
-    private Context context;
     private Button addInstrument;
+    private Button instrumentsButton;
     private TextView nameTextView;
     private TextView descriptionTextView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        context = getActivity();
         binding = FragmentInstrumentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         addInstrument = root.findViewById(R.id.add_instrument_button);
         nameTextView = root.findViewById(R.id.instrument_name_edit);
         descriptionTextView = root.findViewById(R.id.instrument_description_edit);
-        Button instrumentsButton = root.findViewById(R.id.view_instruments_button);
+        instrumentsButton = root.findViewById(R.id.view_instruments_button);
 
-        Gateway gateway = new Gateway();
-        String token = getToken();
+        presenter = new InstrumentPresenter(this);
 
         addInstrument.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(!nameTextView.getText().toString().matches("") ||
-                        !descriptionTextView.getText().toString().matches(""))
-                {
-                    gateway.addInstrument(token, nameTextView.getText().toString(), descriptionTextView.getText().toString());
-                    Toast.makeText(context, "Added successfully!", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(context, "Empty field", Toast.LENGTH_SHORT).show();
-                }
+                addInstrumentEventLogic();
             }
         });
 
@@ -71,8 +62,23 @@ public class InstrumentFragment extends Fragment {
         binding = null;
     }
 
-    private String getToken() {
-        SharedPreferences preferences = getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("token", null);
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void addInstrumentEventLogic() {
+        if(!nameTextView.getText().toString().matches("") ||
+                !descriptionTextView.getText().toString().matches(""))
+        {
+            presenter.addInstrument(getSharedPreferences().getString("token", null),
+                    nameTextView.getText().toString(), descriptionTextView.getText().toString());
+
+            Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+        }
     }
 }

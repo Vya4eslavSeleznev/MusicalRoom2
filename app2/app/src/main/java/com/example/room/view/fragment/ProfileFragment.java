@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                refreshEvent();
+                refreshEventLogic();
             }
         });
 
@@ -76,7 +76,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
     }
 
     @Override
-    public void refreshEvent() {
+    public void refreshEventLogic() {
         if(!nameTextView.getText().toString().matches("") ||
                 !phoneTextView.getText().toString().matches("") ||
                 (nameTextView.getText().toString().matches("") &&
