@@ -49,12 +49,9 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
         presenter.setRooms(token);
         presenter.setDataInRecycleView(token);
 
-        adminRoomAdapter.setOnItemClickListener(new AdminRoomAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = presenter.adapterEventLogic(position);
-                startActivity(intent);
-            }
+        adminRoomAdapter.setOnItemClickListener(position -> {
+            Intent intent = presenter.adapterEventLogic(position);
+            startActivity(intent);
         });
     }
 

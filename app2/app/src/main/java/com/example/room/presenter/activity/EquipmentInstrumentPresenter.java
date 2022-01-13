@@ -9,16 +9,28 @@ import java.util.List;
 
 public class EquipmentInstrumentPresenter {
 
-    private Gateway gateway;
-    private View equipmentInstrumentActivity;
+    private final Gateway gateway;
+    private final View equipmentInstrumentActivity;
 
     public EquipmentInstrumentPresenter(View equipmentInstrumentActivity) {
         this.gateway = new Gateway();
         this.equipmentInstrumentActivity = equipmentInstrumentActivity;
     }
 
-    public List<Instrument> getRoomsInstrument(String token, int roomId) {
-        return gateway.getRoomsInstrument(token, roomId);
+    public int getRoomId() {
+        return equipmentInstrumentActivity.getRoomId();
+    }
+
+    public void setInstruments(String token, int roomId) {
+        equipmentInstrumentActivity.setInstruments(gateway.getRoomsInstrument(token, roomId));
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return equipmentInstrumentActivity.getSharedPreferences();
+    }
+
+    public void setDataInRecycleView() {
+        equipmentInstrumentActivity.setDataInRecycleView();
     }
 
     public interface View {
@@ -26,5 +38,6 @@ public class EquipmentInstrumentPresenter {
         SharedPreferences getSharedPreferences();
         void setInstruments(List<Instrument> instruments);
         void setDataInRecycleView();
+        int getRoomId();
     }
 }

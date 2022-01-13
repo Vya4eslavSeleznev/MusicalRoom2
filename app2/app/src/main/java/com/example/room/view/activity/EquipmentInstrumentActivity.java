@@ -21,10 +21,8 @@ import java.util.List;
 
 public class EquipmentInstrumentActivity extends AppCompatActivity implements EquipmentInstrumentPresenter.View {
 
-    private EquipmentInstrumentPresenter presenter;
     private RecyclerView recyclerView;
     private ArrayList<String> instrumentName, instrumentDescription;
-    private EquipmentInstrumentAdapter instrumentAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
 
@@ -40,19 +38,11 @@ public class EquipmentInstrumentActivity extends AppCompatActivity implements Eq
         instrumentName = new ArrayList<>();
         instrumentDescription = new ArrayList<>();
 
-        presenter = new EquipmentInstrumentPresenter(this);
-
-        Bundle bundle = getIntent().getExtras();
-        int roomId = -1;
-
-        if(bundle != null)
-            roomId = bundle.getInt("roomId");
-
-        List<Instrument> instruments = presenter.getRoomsInstrument(
-                getSharedPreferences().getString("token", null), roomId);
-
-        setInstruments(instruments);
-        setDataInRecycleView();
+        EquipmentInstrumentPresenter presenter = new EquipmentInstrumentPresenter(this);
+        String token = presenter.getSharedPreferences().getString("token", null);
+        int roomId = presenter.getRoomId();
+        presenter.setInstruments(token, roomId);
+        presenter.setDataInRecycleView();
     }
 
     @Override
@@ -78,9 +68,20 @@ public class EquipmentInstrumentActivity extends AppCompatActivity implements Eq
 
     @Override
     public void setDataInRecycleView() {
-        instrumentAdapter = new EquipmentInstrumentAdapter(EquipmentInstrumentActivity.this,
+        EquipmentInstrumentAdapter instrumentAdapter = new EquipmentInstrumentAdapter(EquipmentInstrumentActivity.this,
                 instrumentName, instrumentDescription);
         recyclerView.setAdapter(instrumentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(EquipmentInstrumentActivity.this));
+    }
+
+    @Override
+    public int getRoomId() {
+        Bundle bundle = getIntent().getExtras();
+        int roomId = -1;
+
+        if(bundle != null)
+            roomId = bundle.getInt("roomId");
+
+        return roomId;
     }
 }

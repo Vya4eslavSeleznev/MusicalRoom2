@@ -7,8 +7,8 @@ import com.example.room.model.Token;
 
 public class AuthenticationPresenter {
 
-    private Gateway gateway;
-    private View authenticationActivity;
+    private final Gateway gateway;
+    private final View authenticationActivity;
 
     public AuthenticationPresenter(View authenticationActivity) {
         this.gateway = new Gateway();
@@ -17,6 +17,14 @@ public class AuthenticationPresenter {
 
     public Token getToken(String login, String password) {
         return gateway.getToken(login, password);
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return authenticationActivity.getSharedPreferences();
+    }
+
+    public void logInEventLogic() {
+        authenticationActivity.logInEventLogic();
     }
 
     public interface View {
