@@ -15,15 +15,15 @@ import com.example.room.R;
 import com.example.room.adapter.InstrumentAdapter;
 import com.example.room.model.Instrument;
 import com.example.room.model.gateways.Gateway;
+import com.example.room.presenter.activity.InstrumentPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstrumentActivity extends AppCompatActivity {
+public class InstrumentActivity extends AppCompatActivity implements InstrumentPresenter.View{
 
     private RecyclerView recyclerView;
     private ArrayList<String> instrumentName, instrumentDescription;
-    private InstrumentAdapter instrumentAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
 
@@ -39,16 +39,19 @@ public class InstrumentActivity extends AppCompatActivity {
         instrumentName = new ArrayList<>();
         instrumentDescription = new ArrayList<>();
 
-        Gateway gateway = new Gateway();
-        String token = getToken();
-
-        List<Instrument> instruments = gateway.getAllInstruments(token);
-
-        setRooms(instruments);
-        setDataInRecycleView(gateway, token, instruments);
+        InstrumentPresenter presenter = new InstrumentPresenter(this);
+        String token = presenter.getSharedPreferences().getString("token", null);
+        presenter.setInstruments(token);
+        presenter.setDataInRecycleView(token);
     }
 
-    private void setRooms(List<Instrument> instruments) {
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void setInstruments(List<Instrument> instruments) {
         if(instruments.size() == 0) {
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTextView.setVisibility(View.VISIBLE);
@@ -63,14 +66,11 @@ public class InstrumentActivity extends AppCompatActivity {
         }
     }
 
-    private String getToken() {
-        SharedPreferences preferences = this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("token", null);
-    }
-
-    private void setDataInRecycleView(Gateway gateway, String token, List<Instrument> instruments) {
-        instrumentAdapter = new InstrumentAdapter(InstrumentActivity.this, instrumentName, instrumentDescription,
-                instruments, gateway, token);
+    @Override
+    public void setDataInRecycleView(Gateway gateway, String token, List<Instrument> instruments) {
+        InstrumentAdapter instrumentAdapter = new InstrumentAdapter(InstrumentActivity.this,
+                instrumentName, instrumentDescription, instruments, gateway, token);
+        
         recyclerView.setAdapter(instrumentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(InstrumentActivity.this));
     }
