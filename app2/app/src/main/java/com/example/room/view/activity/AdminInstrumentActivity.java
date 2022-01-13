@@ -1,9 +1,5 @@
 package com.example.room.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,16 +7,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.room.R;
 import com.example.room.adapter.AdminInstrumentAdapter;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Instrument;
+import com.example.room.presenter.activity.AdminInstrumentPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminInstrumentActivity extends AppCompatActivity {
+public class AdminInstrumentActivity extends AppCompatActivity implements AdminInstrumentPresenter.View {
 
+    private AdminInstrumentPresenter presenter;
     private RecyclerView recyclerView;
     private ArrayList<String> instrumentName, instrumentDescription;
     private AdminInstrumentAdapter instrumentAdapter;
@@ -39,21 +41,21 @@ public class AdminInstrumentActivity extends AppCompatActivity {
         instrumentName = new ArrayList<>();
         instrumentDescription = new ArrayList<>();
 
-        Bundle bundle = getIntent().getExtras();
-        int roomId = -1;
-
-        if(bundle != null)
-            roomId = bundle.getInt("roomId");
-
-        Gateway gateway = new Gateway();
-        String token = getToken();
-        List<Instrument> instruments = gateway.getRoomsInstrument(token, roomId);
-
-        setInstruments(instruments);
-        setDataInRecycleView(instruments, gateway, token);
+        presenter = new AdminInstrumentPresenter(this);
+        String token = presenter.getSharedPreferences().getString("token", null);
+        int roomId = presenter.getRoomId();
+        presenter.setInstruments(token, roomId);
+        List<Instrument> instruments = presenter.getRoomsInstrument(token, roomId);
+        presenter.setDataInRecycleView(instruments, token);
     }
 
-    private void setInstruments(List<Instrument> instruments) {
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void setInstruments(List<Instrument> instruments) {
         if(instruments.size() == 0) {
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTextView.setVisibility(View.VISIBLE);
@@ -68,15 +70,23 @@ public class AdminInstrumentActivity extends AppCompatActivity {
         }
     }
 
-    private void setDataInRecycleView(List<Instrument> instruments, Gateway gateway, String token) {
+    @Override
+    public void setDataInRecycleView(List<Instrument> instruments, Gateway gateway, String token) {
         instrumentAdapter = new AdminInstrumentAdapter(AdminInstrumentActivity.this, instrumentName,
                 instrumentDescription, instruments, gateway, token);
+
         recyclerView.setAdapter(instrumentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(AdminInstrumentActivity.this));
     }
 
-    private String getToken() {
-        SharedPreferences preferences = this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("token", null);
+    @Override
+    public int getRoomId() {
+        Bundle bundle = getIntent().getExtras();
+        int roomId = -1;
+
+        if(bundle != null)
+            roomId = bundle.getInt("roomId");
+
+        return roomId;
     }
 }

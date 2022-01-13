@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,7 @@ import com.example.room.R;
 import com.example.room.databinding.FragmentReserveBinding;
 import com.example.room.model.Customer;
 import com.example.room.model.Room;
-import com.example.room.presenter.ReservationPresenter;
+import com.example.room.presenter.fragment.ReservationPresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,11 +33,9 @@ public class ReservationFragment extends Fragment implements ReservationPresente
     private ReservationPresenter presenter;
     private FragmentReserveBinding binding;
     private TextView datePicker;
-    private Button dateButton;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private ArrayList<String> roomName;
     private ArrayList<Integer> roomId;
-    private Button reservationButton;
     private Spinner roomSpinner;
     private int currentPosition;
     private String selectedDate;
@@ -50,20 +47,18 @@ public class ReservationFragment extends Fragment implements ReservationPresente
         binding = FragmentReserveBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        reservationButton = root.findViewById(R.id.reservationButton);
+        Button reservationButton = root.findViewById(R.id.reservationButton);
+        Button dateButton = root.findViewById(R.id.dateButton);
         roomSpinner = root.findViewById(R.id.roomSpinner);
         datePicker = root.findViewById(R.id.datePicker);
-        dateButton = root.findViewById(R.id.dateButton);
 
         roomId = new ArrayList<>();
         roomName = new ArrayList<>();
 
-        token = getSharedPreferences().getString("token", null);
-
         presenter = new ReservationPresenter(this);
+        token = presenter.getSharedPreferences().getString("token", null);
+        presenter.parseRoomData(token);
         customer = presenter.getCustomer(token, getSharedPreferences().getInt("userId", 0));
-
-        parseRoomData(presenter.getRooms(token));
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, roomName);
@@ -81,26 +76,12 @@ public class ReservationFragment extends Fragment implements ReservationPresente
             }
         });
 
-        dateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createDateDialog();
-            }
-        });
+        dateButton.setOnClickListener(v -> presenter.createDateDialog());
+        dateSetListener = (view, year, month, day) -> presenter.setDate(year, month, day);
 
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                setDate(year, month, day);
-            }
-        };
-
-        reservationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.addReservation(token, selectedDate, roomId.get(currentPosition), customer.getId());
-                Toast.makeText(getActivity(), "Successful!", Toast.LENGTH_SHORT).show();
-            }
+        reservationButton.setOnClickListener(v -> {
+            presenter.addReservation(token, selectedDate, roomId.get(currentPosition), customer.getId());
+            Toast.makeText(getActivity(), "Successful!", Toast.LENGTH_SHORT).show();
         });
 
         return root;

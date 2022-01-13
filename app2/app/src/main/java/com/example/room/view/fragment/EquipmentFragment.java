@@ -19,7 +19,7 @@ import com.example.room.R;
 import com.example.room.adapter.EquipmentRoomAdapter;
 import com.example.room.databinding.FragmentEquipmentBinding;
 import com.example.room.model.Room;
-import com.example.room.presenter.EquipmentPresenter;
+import com.example.room.presenter.fragment.EquipmentPresenter;
 import com.example.room.view.activity.EquipmentInstrumentActivity;
 
 import java.util.ArrayList;
@@ -29,9 +29,7 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
 
     private EquipmentPresenter presenter;
     private FragmentEquipmentBinding binding;
-    private RecyclerView recyclerView;
-    private ArrayList<String> roomName, roomPrice, roomDescription, instrumentName, instrumentDescription;
-    private EquipmentRoomAdapter roomAdapter;
+    private ArrayList<String> roomName, roomPrice, roomDescription;
     private ImageView emptyImageView;
     private TextView emptyTextView;
 
@@ -40,7 +38,7 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
         binding = FragmentEquipmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        recyclerView = root.findViewById(R.id.user_rooms_instrument_recyclerview);
+        RecyclerView recyclerView = root.findViewById(R.id.user_rooms_instrument_recyclerview);
         emptyImageView = root.findViewById(R.id.empty2_imageView);
         emptyTextView = root.findViewById(R.id.empty2_textView);
 
@@ -48,23 +46,19 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
         roomPrice = new ArrayList<>();
         roomDescription = new ArrayList<>();
 
-        roomAdapter = new EquipmentRoomAdapter(getActivity(), roomName, roomDescription, roomPrice);
+        EquipmentRoomAdapter roomAdapter = new EquipmentRoomAdapter(getActivity(), roomName, roomDescription, roomPrice);
         recyclerView.setAdapter(roomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         presenter = new EquipmentPresenter(this);
-        List<Room> rooms = presenter.getRooms(getSharedPreferences().getString("token", null));
-        setRooms(rooms);
+        presenter.setRooms();
 
-        roomAdapter.setOnItemClickListener(new EquipmentRoomAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Intent intent = new Intent(getActivity(), EquipmentInstrumentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("roomId", rooms.get(position).getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
+        roomAdapter.setOnItemClickListener(position -> {
+            Intent intent = new Intent(getActivity(), EquipmentInstrumentActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("roomId", presenter.listOfRooms().get(position).getId());
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
         return root;
@@ -77,7 +71,12 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
     }
 
     @Override
-    public void setRooms(List<Room> rooms) {
+    public SharedPreferences getSharedPreferences() {
+        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void roomSeparation(List<Room> rooms) {
         if(rooms.size() == 0) {
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTextView.setVisibility(View.VISIBLE);
@@ -91,10 +90,5 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
             emptyImageView.setVisibility(View.GONE);
             emptyTextView.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
     }
 }

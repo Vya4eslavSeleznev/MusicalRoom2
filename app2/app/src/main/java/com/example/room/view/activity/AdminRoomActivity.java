@@ -1,9 +1,5 @@
 package com.example.room.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,16 +8,22 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.room.R;
 import com.example.room.adapter.AdminRoomAdapter;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Room;
+import com.example.room.presenter.activity.AdminRoomPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminRoomActivity extends AppCompatActivity {
+public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPresenter.View {
 
+    private AdminRoomPresenter presenter;
     private RecyclerView recyclerView;
     private ArrayList<String> roomName, roomDescription, roomPrice;
     private AdminRoomAdapter adminRoomAdapter;
@@ -41,19 +43,16 @@ public class AdminRoomActivity extends AppCompatActivity {
         roomDescription = new ArrayList<>();
         roomPrice = new ArrayList<>();
 
-        Gateway gateway = new Gateway();
-        String token = getToken();
-
-        List<Room> rooms = gateway.getAllRooms(token);
+        presenter = new AdminRoomPresenter(this);
+        List<Room> rooms = presenter.getRooms(getSharedPreferences().getString("token", null));
 
         setRooms(rooms);
-        setDataInRecycleView(gateway, token, rooms);
+        setDataInRecycleView(presenter.getGateway(),
+                getSharedPreferences().getString("token", null), rooms);
 
         adminRoomAdapter.setOnItemClickListener(new AdminRoomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                System.out.println("================================CLICK ON RECYCLEVIEW=====================" + position);
-
                 Intent intent = new Intent(AdminRoomActivity.this, AdminInstrumentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("roomId", rooms.get(position).getId());
@@ -62,7 +61,14 @@ public class AdminRoomActivity extends AppCompatActivity {
             }
         });
     }
-    private void setRooms(List<Room> rooms) {
+
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void setRooms(List<Room> rooms) {
         if(rooms.size() == 0) {
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTextView.setVisibility(View.VISIBLE);
@@ -78,14 +84,11 @@ public class AdminRoomActivity extends AppCompatActivity {
         }
     }
 
-    private String getToken() {
-        SharedPreferences preferences = this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("token", null);
-    }
+    @Override
+    public void setDataInRecycleView(Gateway gateway, String token, List<Room> rooms) {
+        adminRoomAdapter = new AdminRoomAdapter(AdminRoomActivity.this, roomName,
+                roomDescription, roomPrice, gateway, token, rooms);
 
-    private void setDataInRecycleView(Gateway gateway, String token, List<Room> rooms) {
-        adminRoomAdapter = new AdminRoomAdapter(AdminRoomActivity.this, roomName, roomDescription, roomPrice,
-                gateway, token, rooms);
         recyclerView.setAdapter(adminRoomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

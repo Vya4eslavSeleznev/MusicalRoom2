@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room.R;
 import com.example.room.adapter.EquipmentRoomAdapter;
 import com.example.room.adapter.RoomAdapter;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Room;
 
 import java.util.ArrayList;

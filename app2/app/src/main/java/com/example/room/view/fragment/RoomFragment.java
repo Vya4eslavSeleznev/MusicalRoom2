@@ -9,66 +9,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentRoomBinding;
-import com.example.room.presenter.RoomPresenter;
+import com.example.room.presenter.fragment.RoomPresenter;
 import com.example.room.view.activity.RoomActivity;
-
-import java.util.ArrayList;
 
 public class RoomFragment extends Fragment implements RoomPresenter.View {
 
     private RoomPresenter presenter;
     private FragmentRoomBinding binding;
-    private Button addRoom;
-    private Button getAllRooms;
     private EditText nameTextView;
     private EditText descriptionTextView;
     private EditText priceTextView;
-    private RecyclerView recyclerView;
-    private ArrayList<String> roomName, roomPrice, roomDescription;
-    private ImageView emptyImageView;
-    private TextView emptyTextView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRoomBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        roomName = new ArrayList<>();
-        roomPrice = new ArrayList<>();
-        roomDescription = new ArrayList<>();
-
-        addRoom = root.findViewById(R.id.add_room_button);
-        getAllRooms = root.findViewById(R.id.view_rooms_button);
+        Button addRoom = root.findViewById(R.id.add_room_button);
+        Button getAllRooms = root.findViewById(R.id.view_rooms_button);
         nameTextView = root.findViewById(R.id.room_name_edit);
         descriptionTextView = root.findViewById(R.id.room_description_edit);
         priceTextView = root.findViewById(R.id.room_price_edit);
-        recyclerView = root.findViewById(R.id.room_recyclerview);
-        emptyImageView = root.findViewById(R.id.empty_room_imageView);
-        emptyTextView = root.findViewById(R.id.empty_room_textView);
 
         presenter = new RoomPresenter(this);
 
-        addRoom.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                addRoomEventLogic();
-            }
-        });
+        addRoom.setOnClickListener(v -> presenter.addRoomEventLogic());
 
-        getAllRooms.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RoomActivity.class);
-                startActivity(intent);
-            }
+        getAllRooms.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), RoomActivity.class);
+            startActivity(intent);
         });
 
         return root;
@@ -91,8 +67,9 @@ public class RoomFragment extends Fragment implements RoomPresenter.View {
            !descriptionTextView.getText().toString().matches("") ||
            !priceTextView.getText().toString().matches(""))
         {
-            presenter.addRoom(getSharedPreferences().getString("token", null),
-                    nameTextView.getText().toString(), descriptionTextView.getText().toString(),
+            String token = presenter.getSharedPreferences().getString("token", null);
+
+            presenter.addRoom(token, nameTextView.getText().toString(), descriptionTextView.getText().toString(),
                     Long.parseLong(priceTextView.getText().toString()));
 
             Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();

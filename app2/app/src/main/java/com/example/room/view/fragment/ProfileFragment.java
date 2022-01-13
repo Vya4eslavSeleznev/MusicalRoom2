@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.room.R;
 import com.example.room.databinding.FragmentProfileBinding;
 import com.example.room.model.Customer;
-import com.example.room.presenter.ProfilePresenter;
+import com.example.room.presenter.fragment.ProfilePresenter;
 import com.example.room.view.activity.ReservationActivity;
 
 public class ProfileFragment extends Fragment implements ProfilePresenter.View {
@@ -26,8 +26,6 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
     private FragmentProfileBinding binding;
     private TextView nameTextView;
     private TextView phoneTextView;
-    private Button refreshButton;
-    private Button myRoomsButton;
     private Customer customer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -35,31 +33,20 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        myRoomsButton = root.findViewById(R.id.my_rooms_button);
+        Button myRoomsButton = root.findViewById(R.id.my_rooms_button);
+        Button refreshButton = root.findViewById(R.id.refresh_button);
         nameTextView = root.findViewById(R.id.editName);
         phoneTextView = root.findViewById(R.id.editPhone);
-        refreshButton = root.findViewById(R.id.refresh_button);
 
         presenter = new ProfilePresenter(this);
-        customer = presenter.getCustomer(getSharedPreferences().getString("token", null),
-                getSharedPreferences().getInt("userId", 0));
+        presenter.setCustomer();
 
-        nameTextView.setText(customer.getName());
-        phoneTextView.setText(customer.getPhone());
-
-        myRoomsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ReservationActivity.class);
-                startActivity(intent);
-            }
+        myRoomsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ReservationActivity.class);
+            startActivity(intent);
         });
 
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshEventLogic();
-            }
-        });
+        refreshButton.setOnClickListener(v -> presenter.refreshEventLogic());
 
         return root;
     }
@@ -80,7 +67,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
         if(!nameTextView.getText().toString().matches("") ||
                 !phoneTextView.getText().toString().matches("") ||
                 (nameTextView.getText().toString().matches("") &&
-                        phoneTextView.getText().toString().matches("")))
+                 phoneTextView.getText().toString().matches("")))
         {
             presenter.updateCustomer(getSharedPreferences().getString("token", null), this.customer.getId(),
                     nameTextView.getText().toString(), phoneTextView.getText().toString());
@@ -90,5 +77,14 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
         } else {
             Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void setCustomer() {
+        customer = presenter.getCustomer(getSharedPreferences().getString("token", null),
+                getSharedPreferences().getInt("userId", 0));
+
+        nameTextView.setText(customer.getName());
+        phoneTextView.setText(customer.getPhone());
     }
 }

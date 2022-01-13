@@ -1,9 +1,5 @@
 package com.example.room.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,10 +7,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.room.R;
 import com.example.room.adapter.InstrumentAdapter;
-import com.example.room.gateways.Gateway;
 import com.example.room.model.Instrument;
+import com.example.room.model.gateways.Gateway;
 
 import java.util.ArrayList;
 import java.util.List;

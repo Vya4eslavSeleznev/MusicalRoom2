@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentCustomerBinding;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.view.activity.CustomerActivity;
 
 public class CustomerFragment extends Fragment {

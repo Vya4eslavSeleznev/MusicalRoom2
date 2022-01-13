@@ -16,15 +16,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentInstrumentBinding;
-import com.example.room.presenter.InstrumentPresenter;
+import com.example.room.presenter.fragment.InstrumentPresenter;
 import com.example.room.view.activity.InstrumentActivity;
 
 public class InstrumentFragment extends Fragment implements InstrumentPresenter.View {
 
     private InstrumentPresenter presenter;
     private FragmentInstrumentBinding binding;
-    private Button addInstrument;
-    private Button instrumentsButton;
     private TextView nameTextView;
     private TextView descriptionTextView;
 
@@ -33,24 +31,18 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
         binding = FragmentInstrumentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        addInstrument = root.findViewById(R.id.add_instrument_button);
+        Button addInstrument = root.findViewById(R.id.add_instrument_button);
+        Button instrumentsButton = root.findViewById(R.id.view_instruments_button);
         nameTextView = root.findViewById(R.id.instrument_name_edit);
         descriptionTextView = root.findViewById(R.id.instrument_description_edit);
-        instrumentsButton = root.findViewById(R.id.view_instruments_button);
 
         presenter = new InstrumentPresenter(this);
 
-        addInstrument.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                addInstrumentEventLogic();
-            }
-        });
+        addInstrument.setOnClickListener(v -> presenter.addInstrumentEventLogic());
 
-        instrumentsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), InstrumentActivity.class);
-                startActivity(intent);
-            }
+        instrumentsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), InstrumentActivity.class);
+            startActivity(intent);
         });
 
         return root;
@@ -72,7 +64,9 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
         if(!nameTextView.getText().toString().matches("") ||
                 !descriptionTextView.getText().toString().matches(""))
         {
-            presenter.addInstrument(getSharedPreferences().getString("token", null),
+            String token = presenter.getSharedPreferences().getString("token", null);
+
+            presenter.addInstrument(token,
                     nameTextView.getText().toString(), descriptionTextView.getText().toString());
 
             Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();

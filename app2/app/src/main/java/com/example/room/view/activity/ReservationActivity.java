@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
 import com.example.room.adapter.ReservationAdapter;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Customer;
 import com.example.room.model.Reservation;
 

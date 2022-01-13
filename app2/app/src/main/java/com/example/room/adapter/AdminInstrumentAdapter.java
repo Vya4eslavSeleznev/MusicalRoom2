@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
 import com.example.room.view.activity.AdminInstrumentActivity;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Instrument;
 
 import org.jetbrains.annotations.NotNull;

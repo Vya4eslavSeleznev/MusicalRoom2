@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.room.R;
 import com.example.room.adapter.CustomerAdapter;
-import com.example.room.gateways.Gateway;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Customer;
 
 import java.util.ArrayList;

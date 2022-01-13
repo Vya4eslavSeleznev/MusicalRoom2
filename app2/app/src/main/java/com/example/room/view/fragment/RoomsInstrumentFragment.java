@@ -18,11 +18,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentRoomsInstrumentBinding;
-import com.example.room.gateways.Gateway;
 import com.example.room.model.Instrument;
 import com.example.room.model.Room;
-import com.example.room.presenter.EquipmentPresenter;
-import com.example.room.presenter.RoomsInstrumentPresenter;
+import com.example.room.presenter.fragment.RoomsInstrumentPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +32,10 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
     private Context context;
     private ArrayList<String> instrumentName, roomName;
     private ArrayList<Integer> instrumentId, roomId;
-    private List<Room> rooms;
-    private List<Instrument> instruments;
     private Spinner roomSpinner;
     private Spinner instrumentSpinner;
     private MutableInt roomCurrentPosition;
     private MutableInt instrumentCurrentPosition;
-    private Button addEquipmentButton;
-    private Button viewEquipmentButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,33 +45,25 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
 
         roomSpinner = root.findViewById(R.id.room_spinner);
         instrumentSpinner = root.findViewById(R.id.instrument_spinner);
-        addEquipmentButton = root.findViewById(R.id.add_equipment_button);
+        Button addEquipmentButton = root.findViewById(R.id.add_equipment_button);
 
         roomId = new ArrayList<>();
         roomName = new ArrayList<>();
         instrumentId = new ArrayList<>();
         instrumentName = new ArrayList<>();
-        rooms = new ArrayList<>();
-        instruments = new ArrayList<>();
 
         presenter = new RoomsInstrumentPresenter(this);
-
-        rooms = presenter.getRooms(getSharedPreferences().getString("token", null));
-        instruments = presenter.getInstruments(getSharedPreferences().getString("token", null));
-
-        parseRoomData(rooms);
-        parseInstrumentData(instruments);
-        setSpinners();
+        presenter.parseData();
+        presenter.setSpinners();
 
         roomCurrentPosition = new MutableInt(0);
         instrumentCurrentPosition = new MutableInt(0);
-
 
         roomSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3)
             {
-                spinnerEventLogic(roomSpinner, roomCurrentPosition);
+                presenter.spinnerEventLogic(roomSpinner, roomCurrentPosition);
             }
 
             @Override
@@ -89,7 +75,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long arg3)
             {
-                spinnerEventLogic(instrumentSpinner, instrumentCurrentPosition);
+                presenter.spinnerEventLogic(instrumentSpinner, instrumentCurrentPosition);
             }
 
             @Override
@@ -97,15 +83,14 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
             }
         });
 
-        addEquipmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenter.addRoomsInstrument(getSharedPreferences().getString("token", null),
-                        (long) rooms.get(roomCurrentPosition.value).getId(),
-                        (long) instruments.get(instrumentCurrentPosition.value).getId());
+        addEquipmentButton.setOnClickListener(v -> {
+            String token = presenter.getSharedPreferences().getString("token", null);
 
-                Toast.makeText(context, "Successful!", Toast.LENGTH_SHORT).show();
-            }
+            presenter.addRoomsInstrument(token,
+                    (long) presenter.getRooms(token).get(roomCurrentPosition.value).getId(),
+                    (long) presenter.getInstruments(token).get(instrumentCurrentPosition.value).getId());
+
+            Toast.makeText(context, "Successful!", Toast.LENGTH_SHORT).show();
         });
 
         return root;
@@ -140,10 +125,10 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
 
     @Override
     public void setSpinners() {
-        ArrayAdapter<String> roomSpinnerAdapter = new ArrayAdapter<String> (context,
+        ArrayAdapter<String> roomSpinnerAdapter = new ArrayAdapter<> (context,
                 android.R.layout.simple_spinner_dropdown_item, roomName);
 
-        ArrayAdapter<String> instrumentSpinnerAdapter = new ArrayAdapter<String> (context,
+        ArrayAdapter<String> instrumentSpinnerAdapter = new ArrayAdapter<> (context,
                 android.R.layout.simple_spinner_dropdown_item, instrumentName);
 
         roomSpinner.setAdapter(roomSpinnerAdapter);
