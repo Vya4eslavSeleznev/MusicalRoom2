@@ -29,6 +29,7 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
     private AdminRoomAdapter adminRoomAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +45,14 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
         roomPrice = new ArrayList<>();
 
         presenter = new AdminRoomPresenter(this);
-        List<Room> rooms = presenter.getRooms(getSharedPreferences().getString("token", null));
-
-        setRooms(rooms);
-        setDataInRecycleView(presenter.getGateway(),
-                getSharedPreferences().getString("token", null), rooms);
+        token = presenter.getSharedPreferences().getString("token", null);
+        presenter.setRooms(token);
+        presenter.setDataInRecycleView(token);
 
         adminRoomAdapter.setOnItemClickListener(new AdminRoomAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent = new Intent(AdminRoomActivity.this, AdminInstrumentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("roomId", rooms.get(position).getId());
-                intent.putExtras(bundle);
+                Intent intent = presenter.adapterEventLogic(position);
                 startActivity(intent);
             }
         });
@@ -91,5 +87,15 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
 
         recyclerView.setAdapter(adminRoomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public Intent adapterEventLogic(int position) {
+        Intent intent = new Intent(AdminRoomActivity.this, AdminInstrumentActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("roomId", presenter.getRooms(token).get(position).getId());
+        intent.putExtras(bundle);
+
+        return intent;
     }
 }

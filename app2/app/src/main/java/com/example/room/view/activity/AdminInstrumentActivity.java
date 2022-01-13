@@ -22,10 +22,8 @@ import java.util.List;
 
 public class AdminInstrumentActivity extends AppCompatActivity implements AdminInstrumentPresenter.View {
 
-    private AdminInstrumentPresenter presenter;
     private RecyclerView recyclerView;
     private ArrayList<String> instrumentName, instrumentDescription;
-    private AdminInstrumentAdapter instrumentAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
 
@@ -41,7 +39,7 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
         instrumentName = new ArrayList<>();
         instrumentDescription = new ArrayList<>();
 
-        presenter = new AdminInstrumentPresenter(this);
+        AdminInstrumentPresenter presenter = new AdminInstrumentPresenter(this);
         String token = presenter.getSharedPreferences().getString("token", null);
         int roomId = presenter.getRoomId();
         presenter.setInstruments(token, roomId);
@@ -72,7 +70,7 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
 
     @Override
     public void setDataInRecycleView(List<Instrument> instruments, Gateway gateway, String token) {
-        instrumentAdapter = new AdminInstrumentAdapter(AdminInstrumentActivity.this, instrumentName,
+        AdminInstrumentAdapter instrumentAdapter = new AdminInstrumentAdapter(AdminInstrumentActivity.this, instrumentName,
                 instrumentDescription, instruments, gateway, token);
 
         recyclerView.setAdapter(instrumentAdapter);
