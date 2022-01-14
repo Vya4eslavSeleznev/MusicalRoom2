@@ -20,23 +20,21 @@ public class RoomsInstrumentPresenter {
         this.roomsInstrumentFragment = roomsInstrumentFragment;
     }
 
-    public List<Room> getRooms(String token) {
-        return gateway.getAllRooms(token);
+    public List<Room> getRooms() {
+        return gateway.getAllRooms(getToken());
     }
 
-    public List<Instrument> getInstruments(String token) {
-        return gateway.getAllInstruments(token);
+    public List<Instrument> getInstruments() {
+        return gateway.getAllInstruments(getToken());
     }
 
-    public void addRoomsInstrument(String token, Long roomId, Long instrumentId) {
-        gateway.addRoomsInstrument(token, roomId, instrumentId);
+    public void addRoomsInstrument(Long roomId, Long instrumentId) {
+        gateway.addRoomsInstrument(getToken(), roomId, instrumentId);
     }
 
     public void parseData() {
-        String token = roomsInstrumentFragment.getSharedPreferences().getString("token", null);
-
-        roomsInstrumentFragment.parseRoomData(gateway.getAllRooms(token));
-        roomsInstrumentFragment.parseInstrumentData(gateway.getAllInstruments(token));
+        roomsInstrumentFragment.parseRoomData(gateway.getAllRooms(getToken()));
+        roomsInstrumentFragment.parseInstrumentData(gateway.getAllInstruments(getToken()));
     }
 
     public void setSpinners() {
@@ -49,6 +47,10 @@ public class RoomsInstrumentPresenter {
 
     public SharedPreferences getSharedPreferences() {
         return roomsInstrumentFragment.getSharedPreferences();
+    }
+
+    private String getToken() {
+        return getSharedPreferences().getString("token", null);
     }
 
     public interface View {

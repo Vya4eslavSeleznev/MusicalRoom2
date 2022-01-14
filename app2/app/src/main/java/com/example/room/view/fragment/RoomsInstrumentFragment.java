@@ -84,11 +84,9 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
         });
 
         addEquipmentButton.setOnClickListener(v -> {
-            String token = presenter.getSharedPreferences().getString("token", null);
-
-            presenter.addRoomsInstrument(token,
-                    (long) presenter.getRooms(token).get(roomCurrentPosition.value).getId(),
-                    (long) presenter.getInstruments(token).get(instrumentCurrentPosition.value).getId());
+            presenter.addRoomsInstrument(
+                    (long) presenter.getRooms().get(roomCurrentPosition.value).getId(),
+                    (long) presenter.getInstruments().get(instrumentCurrentPosition.value).getId());
 
             Toast.makeText(context, "Successful!", Toast.LENGTH_SHORT).show();
         });
@@ -138,6 +136,5 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
     @Override
     public void spinnerEventLogic(Spinner spinner, MutableInt pos) {
         pos.value = spinner.getSelectedItemPosition();
-        System.out.println(spinner.getSelectedItem() + " .Position: " +  spinner.getSelectedItemPosition());
     }
 }
