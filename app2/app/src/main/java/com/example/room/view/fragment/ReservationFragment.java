@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentReserveBinding;
-import com.example.room.model.Customer;
 import com.example.room.model.Room;
 import com.example.room.presenter.fragment.ReservationPresenter;
 
@@ -39,7 +38,6 @@ public class ReservationFragment extends Fragment implements ReservationPresente
     private Spinner roomSpinner;
     private int currentPosition;
     private String selectedDate;
-    private Customer customer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +54,6 @@ public class ReservationFragment extends Fragment implements ReservationPresente
 
         presenter = new ReservationPresenter(this);
         presenter.parseRoomData();
-        customer = presenter.getCustomer(getSharedPreferences().getInt("userId", 0));
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, roomName);
@@ -78,7 +75,7 @@ public class ReservationFragment extends Fragment implements ReservationPresente
         dateSetListener = (view, year, month, day) -> presenter.setDate(year, month, day);
 
         reservationButton.setOnClickListener(v -> {
-            presenter.addReservation(selectedDate, roomId.get(currentPosition), customer.getId());
+            presenter.addReservation(selectedDate, roomId.get(currentPosition));
             Toast.makeText(getActivity(), "Successful!", Toast.LENGTH_SHORT).show();
         });
 

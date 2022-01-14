@@ -45,12 +45,8 @@ public class RoomsInstrumentPresenter {
         roomsInstrumentFragment.spinnerEventLogic(spinner, pos);
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return roomsInstrumentFragment.getSharedPreferences();
-    }
-
     private String getToken() {
-        return getSharedPreferences().getString("token", null);
+        return roomsInstrumentFragment.getSharedPreferences().getString("token", null);
     }
 
     public interface View {

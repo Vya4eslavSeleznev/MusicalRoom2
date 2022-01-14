@@ -21,16 +21,12 @@ public class AdminInstrumentPresenter {
         instrumentActivity.setInstruments(getRoomsInstrument());
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return instrumentActivity.getSharedPreferences();
-    }
-
     public void setDataInRecycleView() {
         instrumentActivity.setDataInRecycleView(getRoomsInstrument(), gateway, getToken());
     }
 
     private String getToken() {
-        return getSharedPreferences().getString("token", null);
+        return instrumentActivity.getSharedPreferences().getString("token", null);
     }
 
     private List<Instrument> getRoomsInstrument() {

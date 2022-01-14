@@ -15,15 +15,11 @@ public class RoomPresenter {
     }
 
     public void addRoom(String name, String description, Long price) {
-        gateway.addRoom(getSharedPreferences().getString("token", null), name, description, price);
+        gateway.addRoom(roomFragment.getSharedPreferences().getString("token", null), name, description, price);
     }
 
     public void addRoomEventLogic() {
         roomFragment.addRoomEventLogic();
-    }
-
-    public SharedPreferences getSharedPreferences() {
-        return roomFragment.getSharedPreferences();
     }
 
     public interface View {

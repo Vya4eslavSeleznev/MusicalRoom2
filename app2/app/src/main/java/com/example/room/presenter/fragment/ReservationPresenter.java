@@ -18,12 +18,8 @@ public class ReservationPresenter {
         this.reservationFragment = reservationFragment;
     }
 
-    public Customer getCustomer(int userId) {
-        return gateway.getCustomer(getToken(), userId);
-    }
-
-    public void addReservation(String date, int roomId, int customerId) {
-        gateway.addReservation(getToken(), date, roomId, customerId);
+    public void addReservation(String date, int roomId) {
+        gateway.addReservation(getToken(), date, roomId, getCustomer().getId());
     }
 
     public void parseRoomData() {
@@ -38,12 +34,12 @@ public class ReservationPresenter {
         reservationFragment.setDate(year, month, day);
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return reservationFragment.getSharedPreferences();
+    private String getToken() {
+        return reservationFragment.getSharedPreferences().getString("token", null);
     }
 
-    private String getToken() {
-        return getSharedPreferences().getString("token", null);
+    private Customer getCustomer() {
+        return gateway.getCustomer(getToken(), reservationFragment.getSharedPreferences().getInt("userId", 0));
     }
 
     public interface View {
