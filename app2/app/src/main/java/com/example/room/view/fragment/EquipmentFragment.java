@@ -25,20 +25,21 @@ import com.example.room.view.activity.EquipmentInstrumentActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EquipmentFragment extends Fragment implements EquipmentPresenter.View{
+public class EquipmentFragment extends Fragment implements EquipmentPresenter.View {
 
     private EquipmentPresenter presenter;
     private FragmentEquipmentBinding binding;
     private ArrayList<String> roomName, roomPrice, roomDescription;
     private ImageView emptyImageView;
     private TextView emptyTextView;
+    private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEquipmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        RecyclerView recyclerView = root.findViewById(R.id.user_rooms_instrument_recyclerview);
+        recyclerView = root.findViewById(R.id.user_rooms_instrument_recyclerview);
         emptyImageView = root.findViewById(R.id.empty2_imageView);
         emptyTextView = root.findViewById(R.id.empty2_textView);
 
@@ -46,18 +47,12 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
         roomPrice = new ArrayList<>();
         roomDescription = new ArrayList<>();
 
-        EquipmentRoomAdapter roomAdapter = new EquipmentRoomAdapter(getActivity(), roomName, roomDescription, roomPrice);
-        recyclerView.setAdapter(roomAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         presenter = new EquipmentPresenter(this);
         presenter.setRooms();
+        EquipmentRoomAdapter roomAdapter = presenter.setRecycleView();
 
         roomAdapter.setOnItemClickListener(position -> {
-            Intent intent = new Intent(getActivity(), EquipmentInstrumentActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("roomId", presenter.listOfRooms().get(position).getId());
-            intent.putExtras(bundle);
+            Intent intent = presenter.adapterEventLogic(position);
             startActivity(intent);
         });
 
@@ -90,5 +85,26 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
             emptyImageView.setVisibility(View.GONE);
             emptyTextView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public Intent adapterEventLogic(int position, List<Room> rooms) {
+        Intent intent = new Intent(getActivity(), EquipmentInstrumentActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("roomId", rooms.get(position).getId());
+        intent.putExtras(bundle);
+
+        return intent;
+    }
+
+    @Override
+    public EquipmentRoomAdapter setRecycleView() {
+        EquipmentRoomAdapter roomAdapter = new EquipmentRoomAdapter(getActivity(), roomName,
+                roomDescription, roomPrice);
+
+        recyclerView.setAdapter(roomAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        return roomAdapter;
     }
 }
