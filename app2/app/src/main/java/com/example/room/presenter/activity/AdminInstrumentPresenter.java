@@ -17,24 +17,24 @@ public class AdminInstrumentPresenter {
         this.instrumentActivity = instrumentActivity;
     }
 
-    public List<Instrument> getRoomsInstrument(String token, int roomId) {
-        return gateway.getRoomsInstrument(token, roomId);
-    }
-
-    public void setInstruments(String token, int roomId) {
-        instrumentActivity.setInstruments(getRoomsInstrument(token, roomId));
+    public void setInstruments() {
+        instrumentActivity.setInstruments(getRoomsInstrument());
     }
 
     public SharedPreferences getSharedPreferences() {
         return instrumentActivity.getSharedPreferences();
     }
 
-    public int getRoomId() {
-        return instrumentActivity.getRoomId();
+    public void setDataInRecycleView() {
+        instrumentActivity.setDataInRecycleView(getRoomsInstrument(), gateway, getToken());
     }
 
-    public void setDataInRecycleView(List<Instrument> instruments, String token) {
-        instrumentActivity.setDataInRecycleView(instruments, gateway, token);
+    private String getToken() {
+        return getSharedPreferences().getString("token", null);
+    }
+
+    private List<Instrument> getRoomsInstrument() {
+        return gateway.getRoomsInstrument(getToken(), instrumentActivity.getRoomId());
     }
 
     public interface View {

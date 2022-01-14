@@ -40,11 +40,8 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
         instrumentDescription = new ArrayList<>();
 
         AdminInstrumentPresenter presenter = new AdminInstrumentPresenter(this);
-        String token = presenter.getSharedPreferences().getString("token", null);
-        int roomId = presenter.getRoomId();
-        presenter.setInstruments(token, roomId);
-        List<Instrument> instruments = presenter.getRoomsInstrument(token, roomId);
-        presenter.setDataInRecycleView(instruments, token);
+        presenter.setInstruments();
+        presenter.setDataInRecycleView();
     }
 
     @Override
@@ -70,8 +67,8 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
 
     @Override
     public void setDataInRecycleView(List<Instrument> instruments, Gateway gateway, String token) {
-        AdminInstrumentAdapter instrumentAdapter = new AdminInstrumentAdapter(AdminInstrumentActivity.this, instrumentName,
-                instrumentDescription, instruments, gateway, token);
+        AdminInstrumentAdapter instrumentAdapter = new AdminInstrumentAdapter(AdminInstrumentActivity.this,
+                instrumentName, instrumentDescription, instruments, gateway, token);
 
         recyclerView.setAdapter(instrumentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(AdminInstrumentActivity.this));
