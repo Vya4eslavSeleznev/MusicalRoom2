@@ -18,16 +18,16 @@ public class ReservationPresenter {
         this.reservationFragment = reservationFragment;
     }
 
-    public Customer getCustomer(String token, int userId) {
-        return gateway.getCustomer(token, userId);
+    public Customer getCustomer(int userId) {
+        return gateway.getCustomer(getToken(), userId);
     }
 
-    public void addReservation(String token, String date, int roomId, int customerId) {
-        gateway.addReservation(token, date, roomId, customerId);
+    public void addReservation(String date, int roomId, int customerId) {
+        gateway.addReservation(getToken(), date, roomId, customerId);
     }
 
-    public void parseRoomData(String token) {
-        reservationFragment.parseRoomData(gateway.getAllRooms(token));
+    public void parseRoomData() {
+        reservationFragment.parseRoomData(gateway.getAllRooms(getToken()));
     }
 
     public void createDateDialog() {
@@ -40,6 +40,10 @@ public class ReservationPresenter {
 
     public SharedPreferences getSharedPreferences() {
         return reservationFragment.getSharedPreferences();
+    }
+
+    private String getToken() {
+        return getSharedPreferences().getString("token", null);
     }
 
     public interface View {

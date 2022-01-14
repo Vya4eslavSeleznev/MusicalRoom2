@@ -40,7 +40,6 @@ public class ReservationFragment extends Fragment implements ReservationPresente
     private int currentPosition;
     private String selectedDate;
     private Customer customer;
-    private String token;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,11 +55,10 @@ public class ReservationFragment extends Fragment implements ReservationPresente
         roomName = new ArrayList<>();
 
         presenter = new ReservationPresenter(this);
-        token = presenter.getSharedPreferences().getString("token", null);
-        presenter.parseRoomData(token);
-        customer = presenter.getCustomer(token, getSharedPreferences().getInt("userId", 0));
+        presenter.parseRoomData();
+        customer = presenter.getCustomer(getSharedPreferences().getInt("userId", 0));
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String> (getActivity(),
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<> (getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, roomName);
 
         roomSpinner.setAdapter(spinnerAdapter);
@@ -80,7 +78,7 @@ public class ReservationFragment extends Fragment implements ReservationPresente
         dateSetListener = (view, year, month, day) -> presenter.setDate(year, month, day);
 
         reservationButton.setOnClickListener(v -> {
-            presenter.addReservation(token, selectedDate, roomId.get(currentPosition), customer.getId());
+            presenter.addReservation(selectedDate, roomId.get(currentPosition), customer.getId());
             Toast.makeText(getActivity(), "Successful!", Toast.LENGTH_SHORT).show();
         });
 
