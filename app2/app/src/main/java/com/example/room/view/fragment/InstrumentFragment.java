@@ -60,12 +60,10 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
     }
 
     @Override
-    public void addInstrumentEventLogic() {
+    public void addInstrumentEventLogic(String token) {
         if(!nameTextView.getText().toString().matches("") ||
                 !descriptionTextView.getText().toString().matches(""))
         {
-            String token = presenter.getSharedPreferences().getString("token", null);
-
             presenter.addInstrument(token,
                     nameTextView.getText().toString(), descriptionTextView.getText().toString());
 

@@ -19,7 +19,7 @@ public class InstrumentPresenter {
     }
 
     public void addInstrumentEventLogic() {
-        instrumentFragment.addInstrumentEventLogic();
+        instrumentFragment.addInstrumentEventLogic(getSharedPreferences().getString("token", null));
     }
 
     public SharedPreferences getSharedPreferences() {
@@ -29,6 +29,6 @@ public class InstrumentPresenter {
     public interface View {
 
         SharedPreferences getSharedPreferences();
-        void addInstrumentEventLogic();
+        void addInstrumentEventLogic(String token);
     }
 }
