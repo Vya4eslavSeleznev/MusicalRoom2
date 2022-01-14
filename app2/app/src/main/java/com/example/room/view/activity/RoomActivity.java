@@ -12,20 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
-import com.example.room.adapter.EquipmentRoomAdapter;
 import com.example.room.adapter.RoomAdapter;
-import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Room;
+import com.example.room.model.gateways.Gateway;
+import com.example.room.presenter.activity.RoomPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomActivity extends AppCompatActivity {
+public class RoomActivity extends AppCompatActivity implements RoomPresenter.View {
 
     private RecyclerView recyclerView;
     private ArrayList<String> roomName, roomDescription, roomPrice;
-    private RoomAdapter roomAdapter;
-    private EquipmentRoomAdapter instrumentAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
 
@@ -42,29 +40,18 @@ public class RoomActivity extends AppCompatActivity {
         roomDescription = new ArrayList<>();
         roomPrice = new ArrayList<>();
 
-        Gateway gateway = new Gateway();
-        String token = getToken();
-
-        List<Room> rooms = gateway.getAllRooms(token);
-
-        setRooms(rooms);
-        setDataInRecycleView(gateway, token, rooms);
-
-        /*instrumentAdapter.setOnItemClickListener(new EquipmentRoomAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                System.out.println("================================CLICK ON RECYCLEVIEW=====================" + position);
-
-                Intent intent = new Intent(RoomActivity.this, EquipmentInstrumentActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("roomId", rooms.get(position).getId());
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });*/
+        RoomPresenter presenter = new RoomPresenter(this);
+        presenter.setRooms();
+        presenter.setDataInRecycleView();
     }
 
-    private void setRooms(List<Room> rooms) {
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void setRooms(List<Room> rooms) {
         if(rooms.size() == 0) {
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTextView.setVisibility(View.VISIBLE);
@@ -80,18 +67,12 @@ public class RoomActivity extends AppCompatActivity {
         }
     }
 
-    private String getToken() {
-        SharedPreferences preferences = this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-        return preferences.getString("token", null);
-    }
+    @Override
+    public void setDataInRecycleView(Gateway gateway, String token, List<Room> rooms) {
+        RoomAdapter roomAdapter = new RoomAdapter(RoomActivity.this, roomName, roomDescription, roomPrice,
+                rooms, gateway, token);
 
-    private void setDataInRecycleView(Gateway gateway, String token, List<Room> rooms) {
-        roomAdapter = new RoomAdapter(RoomActivity.this, roomName, roomDescription, roomPrice, rooms, gateway, token);
         recyclerView.setAdapter(roomAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(RoomActivity.this));
-
-        /*instrumentAdapter = new EquipmentRoomAdapter(RoomActivity.this, roomName, roomDescription, roomPrice);
-        recyclerView.setAdapter(instrumentAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));*/
     }
 }

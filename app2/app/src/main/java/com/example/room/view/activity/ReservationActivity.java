@@ -1,7 +1,6 @@
 package com.example.room.view.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,23 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
 import com.example.room.adapter.ReservationAdapter;
-import com.example.room.model.gateways.Gateway;
-import com.example.room.model.Customer;
 import com.example.room.model.Reservation;
+import com.example.room.model.gateways.Gateway;
+import com.example.room.presenter.activity.ReservationPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationActivity extends AppCompatActivity {
+public class ReservationActivity extends AppCompatActivity implements ReservationPresenter.View{
 
+    private ReservationPresenter presenter;
     private RecyclerView recyclerView;
     private ArrayList<String> roomName, roomPrice, reservationDate;
-    private ReservationAdapter reservationAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
     private String token;
-    private Customer customer;
-    private Gateway gateway;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,27 +48,37 @@ public class ReservationActivity extends AppCompatActivity {
         roomPrice = new ArrayList<>();
         reservationDate = new ArrayList<>();
 
-        gateway = new Gateway();
-        SharedPreferences preferences = this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
-
-        token = preferences.getString("token", null);
-        int userId = preferences.getInt("userId", 0);
-        customer = gateway.getCustomer(token, userId);
-
-        List<Reservation> reservations = gateway.getCustomerReservation(token, customer.getId());
-
-        setReservation(reservations);
-
-        reservationAdapter = new ReservationAdapter(ReservationActivity.this, roomName, roomPrice,
-                                                    reservationDate, reservations, gateway, token);
-        recyclerView.removeAllViewsInLayout();
-
-        recyclerView.setAdapter(reservationAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ReservationActivity.this));
-        reservationAdapter.notifyDataSetChanged();
+        presenter = new ReservationPresenter(this);
+        token = presenter.getSharedPreferences().getString("token", null);
+        userId = presenter.getSharedPreferences().getInt("userId", 0);
+        presenter.setReservations(token, userId);
+        presenter.setRecycleView(token, userId);
     }
 
-    private void setReservation(List<Reservation> reservations) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.delete_all_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.delete_all) {
+            presenter.confirmDialog(token, userId);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences() {
+        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public void setReservations(List<Reservation> reservations) {
         if(reservations.size() == 0) {
             emptyImageView.setVisibility(View.VISIBLE);
             emptyTextView.setVisibility(View.VISIBLE);
@@ -87,47 +95,32 @@ public class ReservationActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.delete_all_menu, menu);
+    public void setRecycleView(List<Reservation> reservations, Gateway gateway, String token) {
+        ReservationAdapter reservationAdapter = new ReservationAdapter(ReservationActivity.this,
+                roomName, roomPrice,  reservationDate, reservations, gateway, token);
 
-        return super.onCreateOptionsMenu(menu);
+        recyclerView.removeAllViewsInLayout();
+        recyclerView.setAdapter(reservationAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(ReservationActivity.this));
+        reservationAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.delete_all) {
-            confirmDialog();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    void confirmDialog() {
+    public void confirmDialog(Gateway gateway, String token, int userId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all reservations?");
 
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                gateway.deleteCustomerReservations(token, customer.getId());
-
-                Intent intent = new Intent(ReservationActivity.this, ReservationActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            gateway.deleteCustomerReservations(token, userId);
+            Intent intent = new Intent(ReservationActivity.this, ReservationActivity.class);
+            startActivity(intent);
+            finish();
         });
 
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+        builder.setNegativeButton("No", (dialog, which) -> {
         });
 
         builder.create().show();
     }
-
-
 }

@@ -70,7 +70,7 @@ public class InstrumentActivity extends AppCompatActivity implements InstrumentP
     public void setDataInRecycleView(Gateway gateway, String token, List<Instrument> instruments) {
         InstrumentAdapter instrumentAdapter = new InstrumentAdapter(InstrumentActivity.this,
                 instrumentName, instrumentDescription, instruments, gateway, token);
-        
+
         recyclerView.setAdapter(instrumentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(InstrumentActivity.this));
     }
