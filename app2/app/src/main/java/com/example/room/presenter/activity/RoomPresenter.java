@@ -17,10 +17,6 @@ public class RoomPresenter {
         this.roomActivity = roomActivity;
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return roomActivity.getSharedPreferences();
-    }
-
     public void setRooms() {
         roomActivity.setRooms(getAllRooms());
     }

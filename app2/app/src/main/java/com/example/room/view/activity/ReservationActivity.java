@@ -25,7 +25,7 @@ import com.example.room.presenter.activity.ReservationPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservationActivity extends AppCompatActivity implements ReservationPresenter.View{
+public class ReservationActivity extends AppCompatActivity implements ReservationPresenter.View {
 
     private ReservationPresenter presenter;
     private RecyclerView recyclerView;
