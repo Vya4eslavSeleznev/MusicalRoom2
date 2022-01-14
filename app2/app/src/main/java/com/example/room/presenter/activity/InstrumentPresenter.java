@@ -17,20 +17,20 @@ public class InstrumentPresenter {
         this.instrumentActivity = instrumentActivity;
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return instrumentActivity.getSharedPreferences();
+    public void setInstruments() {
+        instrumentActivity.setInstruments(getAllInstruments());
     }
 
-    public void setInstruments(String token) {
-        instrumentActivity.setInstruments(getAllInstruments(token));
+    public void setDataInRecycleView() {
+        instrumentActivity.setDataInRecycleView(gateway, getToken(), getAllInstruments());
     }
 
-    public void setDataInRecycleView(String token) {
-        instrumentActivity.setDataInRecycleView(gateway, token, getAllInstruments(token));
+    private List<Instrument> getAllInstruments() {
+        return gateway.getAllInstruments(getToken());
     }
 
-    private List<Instrument> getAllInstruments(String token) {
-        return gateway.getAllInstruments(token);
+    private String getToken() {
+        return instrumentActivity.getSharedPreferences().getString("token", null);
     }
 
     public interface View {

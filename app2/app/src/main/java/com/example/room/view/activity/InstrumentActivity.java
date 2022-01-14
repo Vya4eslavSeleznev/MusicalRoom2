@@ -40,9 +40,8 @@ public class InstrumentActivity extends AppCompatActivity implements InstrumentP
         instrumentDescription = new ArrayList<>();
 
         InstrumentPresenter presenter = new InstrumentPresenter(this);
-        String token = presenter.getSharedPreferences().getString("token", null);
-        presenter.setInstruments(token);
-        presenter.setDataInRecycleView(token);
+        presenter.setInstruments();
+        presenter.setDataInRecycleView();
     }
 
     @Override
