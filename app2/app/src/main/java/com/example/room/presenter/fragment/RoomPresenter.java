@@ -14,8 +14,8 @@ public class RoomPresenter {
         this.roomFragment = roomFragment;
     }
 
-    public void addRoom(String token, String name, String description, Long price) {
-        gateway.addRoom(token, name, description, price);
+    public void addRoom(String name, String description, Long price) {
+        gateway.addRoom(getSharedPreferences().getString("token", null), name, description, price);
     }
 
     public void addRoomEventLogic() {

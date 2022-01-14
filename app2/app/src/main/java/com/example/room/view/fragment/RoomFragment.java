@@ -67,9 +67,7 @@ public class RoomFragment extends Fragment implements RoomPresenter.View {
            !descriptionTextView.getText().toString().matches("") ||
            !priceTextView.getText().toString().matches(""))
         {
-            String token = presenter.getSharedPreferences().getString("token", null);
-
-            presenter.addRoom(token, nameTextView.getText().toString(), descriptionTextView.getText().toString(),
+            presenter.addRoom(nameTextView.getText().toString(), descriptionTextView.getText().toString(),
                     Long.parseLong(priceTextView.getText().toString()));
 
             Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
