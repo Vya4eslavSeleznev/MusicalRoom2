@@ -29,7 +29,6 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
     private AdminRoomAdapter adminRoomAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
-    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +44,8 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
         roomPrice = new ArrayList<>();
 
         presenter = new AdminRoomPresenter(this);
-        token = presenter.getSharedPreferences().getString("token", null);
-        presenter.setRooms(token);
-        presenter.setDataInRecycleView(token);
+        presenter.setRooms();
+        presenter.setDataInRecycleView();
 
         adminRoomAdapter.setOnItemClickListener(position -> {
             Intent intent = presenter.adapterEventLogic(position);
@@ -90,7 +88,7 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
     public Intent adapterEventLogic(int position) {
         Intent intent = new Intent(AdminRoomActivity.this, AdminInstrumentActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putInt("roomId", presenter.getRooms(token).get(position).getId());
+        bundle.putInt("roomId", presenter.getRooms().get(position).getId());
         intent.putExtras(bundle);
 
         return intent;

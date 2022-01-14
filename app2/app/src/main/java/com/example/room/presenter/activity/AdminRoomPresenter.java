@@ -18,28 +18,28 @@ public class AdminRoomPresenter {
         this.roomActivity = roomActivity;
     }
 
-    public List<Room> getRooms(String token) {
-        return gateway.getAllRooms(token);
+    public List<Room> getRooms() {
+        return gateway.getAllRooms(getToken());
     }
 
     public Gateway getGateway() {
         return gateway;
     }
 
-    public void setRooms(String token) {
-        roomActivity.setRooms(getRooms(token));
+    public void setRooms() {
+        roomActivity.setRooms(getRooms());
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return roomActivity.getSharedPreferences();
-    }
-
-    public void setDataInRecycleView(String token) {
-        roomActivity.setDataInRecycleView(gateway, token, getRooms(token));
+    public void setDataInRecycleView() {
+        roomActivity.setDataInRecycleView(gateway, getToken(), getRooms());
     }
 
     public Intent adapterEventLogic(int position) {
         return roomActivity.adapterEventLogic(position);
+    }
+
+    private String getToken() {
+        return roomActivity.getSharedPreferences().getString("token", null);
     }
 
     public interface View {
