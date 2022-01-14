@@ -32,8 +32,6 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
     private ArrayList<String> roomName, roomPrice, reservationDate;
     private ImageView emptyImageView;
     private TextView emptyTextView;
-    private String token;
-    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +47,8 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
         reservationDate = new ArrayList<>();
 
         presenter = new ReservationPresenter(this);
-        token = presenter.getSharedPreferences().getString("token", null);
-        userId = presenter.getSharedPreferences().getInt("userId", 0);
-        presenter.setReservations(token, userId);
-        presenter.setRecycleView(token, userId);
+        presenter.setReservations();
+        presenter.setRecycleView();
     }
 
     @Override
@@ -66,7 +62,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.delete_all) {
-            presenter.confirmDialog(token, userId);
+            presenter.confirmDialog();
         }
 
         return super.onOptionsItemSelected(item);

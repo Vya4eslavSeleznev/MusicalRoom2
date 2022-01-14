@@ -18,24 +18,28 @@ public class ReservationPresenter {
         this.reservationActivity = instrumentActivity;
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return reservationActivity.getSharedPreferences();
+    public void setReservations() {
+        reservationActivity.setReservations(gateway.getCustomerReservation(getToken(), getCustomer().getId()));
     }
 
-    public void setReservations(String token, int userId) {
-        reservationActivity.setReservations(gateway.getCustomerReservation(token, getCustomer(token, userId).getId()));
+    public void setRecycleView() {
+        reservationActivity.setRecycleView(gateway.getCustomerReservation(getToken(), getUserId()), gateway, getToken());
     }
 
-    public void setRecycleView(String token, int userId) {
-        reservationActivity.setRecycleView(gateway.getCustomerReservation(token, userId), gateway, token);
+    public void confirmDialog() {
+        reservationActivity.confirmDialog(gateway, getToken(), getUserId());
     }
 
-    public void confirmDialog(String token, int userId) {
-        reservationActivity.confirmDialog(gateway, token, userId);
+    private Customer getCustomer() {
+        return gateway.getCustomer(getToken(), getUserId());
     }
 
-    private Customer getCustomer(String token, int userId) {
-        return gateway.getCustomer(token, userId);
+    private String getToken() {
+        return reservationActivity.getSharedPreferences().getString("token", null);
+    }
+
+    private int getUserId() {
+        return reservationActivity.getSharedPreferences().getInt("userId", 0);
     }
 
     public interface View {
