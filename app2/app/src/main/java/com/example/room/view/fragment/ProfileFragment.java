@@ -63,13 +63,13 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
     }
 
     @Override
-    public void refreshEventLogic() {
+    public void refreshEventLogic(String token) {
         if(!nameTextView.getText().toString().matches("") ||
                 !phoneTextView.getText().toString().matches("") ||
                 (nameTextView.getText().toString().matches("") &&
                  phoneTextView.getText().toString().matches("")))
         {
-            presenter.updateCustomer(getSharedPreferences().getString("token", null), this.customer.getId(),
+            presenter.updateCustomer(token, this.customer.getId(),
                     nameTextView.getText().toString(), phoneTextView.getText().toString());
 
             Toast.makeText(getActivity(), "Updated successfully!", Toast.LENGTH_SHORT).show();
@@ -80,10 +80,8 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
     }
 
     @Override
-    public void setCustomer() {
-        customer = presenter.getCustomer(getSharedPreferences().getString("token", null),
-                getSharedPreferences().getInt("userId", 0));
-
+    public void setCustomer(String token, int userId) {
+        customer = presenter.getCustomer(token, userId);
         nameTextView.setText(customer.getName());
         phoneTextView.setText(customer.getPhone());
     }

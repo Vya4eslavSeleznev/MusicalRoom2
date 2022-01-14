@@ -20,7 +20,8 @@ public class ProfilePresenter {
     }
 
     public void setCustomer() {
-        equipmentFragment.setCustomer();
+        equipmentFragment.setCustomer(getSharedPreferences().getString("token", null),
+                getSharedPreferences().getInt("userId", 0));
     }
 
     public void updateCustomer(String token, int customerId, String name, String phone) {
@@ -28,13 +29,17 @@ public class ProfilePresenter {
     }
 
     public void refreshEventLogic() {
-        equipmentFragment.refreshEventLogic();
+        equipmentFragment.refreshEventLogic(getSharedPreferences().getString("token", null));
+    }
+
+    public SharedPreferences getSharedPreferences() {
+        return equipmentFragment.getSharedPreferences();
     }
 
     public interface View {
 
         SharedPreferences getSharedPreferences();
-        void refreshEventLogic();
-        void setCustomer();
+        void refreshEventLogic(String token);
+        void setCustomer(String token, int userId);
     }
 }
