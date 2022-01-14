@@ -39,9 +39,7 @@ public class EquipmentInstrumentActivity extends AppCompatActivity implements Eq
         instrumentDescription = new ArrayList<>();
 
         EquipmentInstrumentPresenter presenter = new EquipmentInstrumentPresenter(this);
-        String token = presenter.getSharedPreferences().getString("token", null);
-        int roomId = presenter.getRoomId();
-        presenter.setInstruments(token, roomId);
+        presenter.setInstruments();
         presenter.setDataInRecycleView();
     }
 
@@ -70,6 +68,7 @@ public class EquipmentInstrumentActivity extends AppCompatActivity implements Eq
     public void setDataInRecycleView() {
         EquipmentInstrumentAdapter instrumentAdapter = new EquipmentInstrumentAdapter(EquipmentInstrumentActivity.this,
                 instrumentName, instrumentDescription);
+
         recyclerView.setAdapter(instrumentAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(EquipmentInstrumentActivity.this));
     }

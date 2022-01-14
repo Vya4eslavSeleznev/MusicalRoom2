@@ -17,20 +17,17 @@ public class EquipmentInstrumentPresenter {
         this.equipmentInstrumentActivity = equipmentInstrumentActivity;
     }
 
-    public int getRoomId() {
-        return equipmentInstrumentActivity.getRoomId();
-    }
-
-    public void setInstruments(String token, int roomId) {
-        equipmentInstrumentActivity.setInstruments(gateway.getRoomsInstrument(token, roomId));
-    }
-
-    public SharedPreferences getSharedPreferences() {
-        return equipmentInstrumentActivity.getSharedPreferences();
+    public void setInstruments() {
+        equipmentInstrumentActivity.setInstruments(gateway.getRoomsInstrument(getToken(),
+                equipmentInstrumentActivity.getRoomId()));
     }
 
     public void setDataInRecycleView() {
         equipmentInstrumentActivity.setDataInRecycleView();
+    }
+
+    private String getToken() {
+        return equipmentInstrumentActivity.getSharedPreferences().getString("token", null);
     }
 
     public interface View {
