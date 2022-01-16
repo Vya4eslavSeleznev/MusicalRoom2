@@ -26,15 +26,17 @@ import java.util.List;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
-    private Context context;
-    private ArrayList roomName, roomPrice, reservationDate;
-    private Animation translateAnim;
-    private List<Reservation> reservations;
-    private Gateway gateway;
-    private String token;
+    private final Context context;
+    private final ArrayList<String> roomName;
+    private final ArrayList<String> roomPrice;
+    private final ArrayList<String> reservationDate;
+    private final List<Reservation> reservations;
+    private final Gateway gateway;
+    private final String token;
 
-    public ReservationAdapter(Context context, ArrayList roomName, ArrayList roomPrice, ArrayList reservationDate,
-                              List<Reservation> reservations, Gateway gateway, String token) {
+    public ReservationAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomPrice,
+                              ArrayList<String> reservationDate, List<Reservation> reservations,
+                              Gateway gateway, String token) {
         this.context = context;
         this.roomName = roomName;
         this.roomPrice = roomPrice;
@@ -68,9 +70,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView roomNameTxt, priceTxt, dateTxt;
-        private LinearLayout mainLayout;
-        private Button deleteBtn;
+        private final TextView roomNameTxt;
+        private final TextView priceTxt;
+        private final TextView dateTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -78,20 +80,17 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             roomNameTxt = itemView.findViewById(R.id.reservation_room_name_textView);
             priceTxt = itemView.findViewById(R.id.reservation_price_textView);
             dateTxt = itemView.findViewById(R.id.reservation_date_or_description_textView);
-            mainLayout = itemView.findViewById(R.id.reservation_layout);
-            deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
-            translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            LinearLayout mainLayout = itemView.findViewById(R.id.reservation_layout);
+            Button deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
+            Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gateway.deleteReservation(token, reservations.get(getAdapterPosition()).getId());
-                    reservations.remove(getAdapterPosition());
+            deleteBtn.setOnClickListener(v -> {
+                gateway.deleteReservation(token, reservations.get(getAdapterPosition()).getId());
+                reservations.remove(getAdapterPosition());
 
-                    Intent intent = new Intent(context, ReservationActivity.class);
-                    context.startActivity(intent);
-                }
+                Intent intent = new Intent(context, ReservationActivity.class);
+                context.startActivity(intent);
             });
         }
     }

@@ -26,21 +26,21 @@ import java.util.List;
 
 public class AdminRoomAdapter extends RecyclerView.Adapter<AdminRoomAdapter.ViewHolder>{
 
-    private Context context;
-    private ArrayList roomName, roomDescription, roomPrice;
-    private Animation translateAnim;
-    private Gateway gateway;
-    private String token;
-    private List<Room> rooms;
+    private final Context context;
+    private final ArrayList<String> roomName;
+    private final ArrayList<String> roomDescription;
+    private final ArrayList<String> roomPrice;
+    private final Gateway gateway;
+    private final String token;
+    private final List<Room> rooms;
     private OnItemClickListener listener;
 
-    public AdminRoomAdapter(Context context, ArrayList roomName, ArrayList roomDescription,
-                            ArrayList roomPrice, Gateway gateway, String token, List<Room> rooms) {
+    public AdminRoomAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomDescription,
+                            ArrayList<String> roomPrice, Gateway gateway, String token, List<Room> rooms) {
         this.context = context;
         this.roomName = roomName;
         this.roomDescription = roomDescription;
         this.roomPrice = roomPrice;
-        this.translateAnim = translateAnim;
         this.gateway = gateway;
         this.token = token;
         this.rooms = rooms;
@@ -89,9 +89,9 @@ public class AdminRoomAdapter extends RecyclerView.Adapter<AdminRoomAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView roomNameTxt, roomDescriptionTxt, roomPriceTxt;
-        private LinearLayout mainLayout;
-        private Button deleteBtn;
+        private final TextView roomNameTxt;
+        private final TextView roomDescriptionTxt;
+        private final TextView roomPriceTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -99,31 +99,25 @@ public class AdminRoomAdapter extends RecyclerView.Adapter<AdminRoomAdapter.View
             roomNameTxt = itemView.findViewById(R.id.reservation_room_name_textView);
             roomDescriptionTxt = itemView.findViewById(R.id.reservation_date_or_description_textView);
             roomPriceTxt = itemView.findViewById(R.id.reservation_price_textView);
-            mainLayout = itemView.findViewById(R.id.reservation_layout);
-            deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
-            translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            LinearLayout mainLayout = itemView.findViewById(R.id.reservation_layout);
+            Button deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
+            Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gateway.deleteRoom(token, rooms.get(getAdapterPosition()).getId());
-                    rooms.remove(getAdapterPosition());
+            deleteBtn.setOnClickListener(v -> {
+                gateway.deleteRoom(token, rooms.get(getAdapterPosition()).getId());
+                rooms.remove(getAdapterPosition());
 
-                    Intent intent = new Intent(context, RoomActivity.class);
-                    context.startActivity(intent);
-                }
+                Intent intent = new Intent(context, RoomActivity.class);
+                context.startActivity(intent);
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null) {
-                        int position = getAdapterPosition();
+            itemView.setOnClickListener(v -> {
+                if(listener != null) {
+                    int position = getAdapterPosition();
 
-                        if(position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
+                    if(position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
                     }
                 }
             });

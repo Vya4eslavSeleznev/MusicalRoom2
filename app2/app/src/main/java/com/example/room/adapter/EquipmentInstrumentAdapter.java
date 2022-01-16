@@ -20,11 +20,12 @@ import java.util.ArrayList;
 
 public class EquipmentInstrumentAdapter extends RecyclerView.Adapter<EquipmentInstrumentAdapter.ViewHolder>{
 
-    private Context context;
-    private ArrayList instrumentName, instrumentDescription;
-    private Animation translateAnim;
+    private final Context context;
+    private final ArrayList<String> instrumentName;
+    private final ArrayList<String> instrumentDescription;
 
-    public EquipmentInstrumentAdapter(Context context, ArrayList instrumentName, ArrayList instrumentDescription) {
+    public EquipmentInstrumentAdapter(Context context, ArrayList<String> instrumentName,
+                                      ArrayList<String> instrumentDescription) {
         this.context = context;
         this.instrumentName = instrumentName;
         this.instrumentDescription = instrumentDescription;
@@ -53,16 +54,16 @@ public class EquipmentInstrumentAdapter extends RecyclerView.Adapter<EquipmentIn
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView instrumentNameTxt, instrumentDescriptionTxt;
-        private LinearLayout mainLayout;
+        private final TextView instrumentNameTxt;
+        private final TextView instrumentDescriptionTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             instrumentNameTxt = itemView.findViewById(R.id.equipment_instrument_name_textView);
             instrumentDescriptionTxt = itemView.findViewById(R.id.equipment_instrument_description_textView);
-            mainLayout = itemView.findViewById(R.id.instrument_equipment_layout);
-            translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            LinearLayout mainLayout = itemView.findViewById(R.id.instrument_equipment_layout);
+            Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
         }
     }

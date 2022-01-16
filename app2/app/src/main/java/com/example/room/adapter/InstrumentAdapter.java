@@ -26,15 +26,16 @@ import java.util.List;
 
 public class InstrumentAdapter extends RecyclerView.Adapter<InstrumentAdapter.ViewHolder>{
 
-    private Context context;
-    private ArrayList instrumentName, instrumentDescription;
-    private Animation translateAnim;
-    private Gateway gateway;
-    private String token;
-    private List<Instrument> instruments;
+    private final Context context;
+    private final ArrayList<String> instrumentName;
+    private final ArrayList<String> instrumentDescription;
+    private final Gateway gateway;
+    private final String token;
+    private final List<Instrument> instruments;
 
-    public InstrumentAdapter(Context context, ArrayList instrumentName, ArrayList instrumentDescription,
-                             List<Instrument> instruments, Gateway gateway, String token) {
+    public InstrumentAdapter(Context context, ArrayList<String> instrumentName,
+                             ArrayList<String> instrumentDescription, List<Instrument> instruments,
+                             Gateway gateway, String token) {
         this.context = context;
         this.instrumentName = instrumentName;
         this.instrumentDescription = instrumentDescription;
@@ -66,29 +67,25 @@ public class InstrumentAdapter extends RecyclerView.Adapter<InstrumentAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView instrumentNameTxt, instrumentDescriptionTxt;
-        private LinearLayout mainLayout;
-        private Button deleteBtn;
+        private final TextView instrumentNameTxt;
+        private final TextView instrumentDescriptionTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
             instrumentNameTxt = itemView.findViewById(R.id.admin_first_textView);
             instrumentDescriptionTxt = itemView.findViewById(R.id.admin_second_textView);
-            mainLayout = itemView.findViewById(R.id.adminLayout);
-            deleteBtn = itemView.findViewById(R.id.delete_admin_button);
-            translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            LinearLayout mainLayout = itemView.findViewById(R.id.adminLayout);
+            Button deleteBtn = itemView.findViewById(R.id.delete_admin_button);
+            Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 
-            deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gateway.deleteInstrument(token, instruments.get(getAdapterPosition()).getId());
-                    instruments.remove(getAdapterPosition());
+            deleteBtn.setOnClickListener(v -> {
+                gateway.deleteInstrument(token, instruments.get(getAdapterPosition()).getId());
+                instruments.remove(getAdapterPosition());
 
-                    Intent intent = new Intent(context, InstrumentActivity.class);
-                    context.startActivity(intent);
-                }
+                Intent intent = new Intent(context, InstrumentActivity.class);
+                context.startActivity(intent);
             });
         }
     }

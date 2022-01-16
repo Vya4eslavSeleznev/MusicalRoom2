@@ -20,13 +20,15 @@ import java.util.ArrayList;
 
 public class EquipmentRoomAdapter extends RecyclerView.Adapter<EquipmentRoomAdapter.ViewHolder>{
 
-    private Context context;
-    private ArrayList roomName, roomDescription, roomPrice;
-    private Animation translateAnim;
+    private final Context context;
+    private final ArrayList<String> roomName;
+    private final ArrayList<String> roomDescription;
+    private final ArrayList<String> roomPrice;
     private OnItemClickListener listener;
 
 
-    public EquipmentRoomAdapter(Context context, ArrayList roomName, ArrayList roomDescription, ArrayList roomPrice) {
+    public EquipmentRoomAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomDescription,
+                                ArrayList<String> roomPrice) {
         this.context = context;
         this.roomName = roomName;
         this.roomDescription = roomDescription;
@@ -76,8 +78,9 @@ public class EquipmentRoomAdapter extends RecyclerView.Adapter<EquipmentRoomAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView roomNameTxt, roomDescriptionTxt, roomPriceTxt;
-        private LinearLayout mainLayout;
+        private final TextView roomNameTxt;
+        private final TextView roomDescriptionTxt;
+        private final TextView roomPriceTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -85,19 +88,16 @@ public class EquipmentRoomAdapter extends RecyclerView.Adapter<EquipmentRoomAdap
             roomNameTxt = itemView.findViewById(R.id.equipment_room_name_textView);
             roomDescriptionTxt = itemView.findViewById(R.id.equipment_description_textView);
             roomPriceTxt = itemView.findViewById(R.id.equipment_price_textView);
-            mainLayout = itemView.findViewById(R.id.room_equipment_layout);
-            translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            LinearLayout mainLayout = itemView.findViewById(R.id.room_equipment_layout);
+            Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null) {
-                        int position = getAdapterPosition();
+            itemView.setOnClickListener(v -> {
+                if(listener != null) {
+                    int position = getAdapterPosition();
 
-                        if(position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
+                    if(position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
                     }
                 }
             });

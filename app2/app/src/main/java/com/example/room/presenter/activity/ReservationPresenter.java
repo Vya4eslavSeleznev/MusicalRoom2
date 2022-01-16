@@ -19,15 +19,10 @@ public class ReservationPresenter {
     }
 
     public void setReservations() {
-        //reservationActivity.setReservations(gateway.getCustomerReservation(getToken(), getCustomer().getId()));
         reservationActivity.setReservations(getCustomerReservation());
     }
 
     public void setRecycleView() {
-        //List<Reservation> reservations = gateway.getCustomerReservation(getToken(), getUserId());
-
-        //reservationActivity.setRecycleView(reservations, gateway, getToken());
-
         reservationActivity.setRecycleView(getCustomerReservation(), gateway, getToken());
     }
 

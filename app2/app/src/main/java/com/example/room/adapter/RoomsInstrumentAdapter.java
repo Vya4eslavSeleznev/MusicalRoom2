@@ -6,12 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
@@ -22,13 +20,17 @@ import java.util.ArrayList;
 
 public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrumentAdapter.ViewHolder>{
 
-    private Context context;
-    private ArrayList roomName, roomPrice, roomDescription, instrumentName, instrumentDescription;
-    private Animation translateAnim;
+    private final Context context;
+    private final ArrayList<String> roomName;
+    private final ArrayList<String> roomPrice;
+    private final ArrayList<String> roomDescription;
+    private final ArrayList<String> instrumentName;
+    private final ArrayList<String> instrumentDescription;
     private OnItemClickListener listener;
 
-    public RoomsInstrumentAdapter(Context context, ArrayList roomName, ArrayList roomPrice, ArrayList roomDescription,
-                                  ArrayList instrumentName, ArrayList instrumentDescription) {
+    public RoomsInstrumentAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomPrice,
+                                  ArrayList<String> roomDescription, ArrayList<String> instrumentName,
+                                  ArrayList<String> instrumentDescription) {
         this.context = context;
         this.roomName = roomName;
         this.roomPrice = roomPrice;
@@ -80,10 +82,12 @@ public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrument
         this.listener = listener;
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView roomNameTxt, priceTxt, roomDescriptionTxt, instrumentNameTxt, instrumentDescriptionTxt;
-        private LinearLayout mainLayout;
+        private final TextView roomNameTxt;
+        private final TextView priceTxt;
+        private final TextView roomDescriptionTxt;
+        private final TextView instrumentNameTxt;
+        private final TextView instrumentDescriptionTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView, OnItemClickListener listener) {
             super(itemView);
@@ -93,33 +97,19 @@ public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrument
             roomDescriptionTxt = itemView.findViewById(R.id.room_description_textView);
             instrumentNameTxt = itemView.findViewById(R.id.instrument_name_textView);
             instrumentDescriptionTxt = itemView.findViewById(R.id.instrument_description_textView);
-            mainLayout = itemView.findViewById(R.id.rooms_instrument_layout);
-            translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
+            LinearLayout mainLayout = itemView.findViewById(R.id.rooms_instrument_layout);
+            Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null) {
-                        int position = getAdapterPosition();
+            itemView.setOnClickListener(v -> {
+                if(listener != null) {
+                    int position = getAdapterPosition();
 
-                        if(position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
+                    if(position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
                     }
                 }
             });
-
-            /*CardView cv = (CardView)itemView.findViewById(R.id.equipment_cardview);
-
-            cv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    System.out.println("==============CLICK================");
-                }
-            });*/
-
-
         }
     }
 }
