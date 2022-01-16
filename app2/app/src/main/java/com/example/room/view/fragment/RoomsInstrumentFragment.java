@@ -20,6 +20,7 @@ import com.example.room.R;
 import com.example.room.databinding.FragmentRoomsInstrumentBinding;
 import com.example.room.model.Instrument;
 import com.example.room.model.Room;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.RoomsInstrumentPresenter;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
     private Spinner instrumentSpinner;
     private MutableInt roomCurrentPosition;
     private MutableInt instrumentCurrentPosition;
+    private Repository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
         roomName = new ArrayList<>();
         instrumentId = new ArrayList<>();
         instrumentName = new ArrayList<>();
+
+        repository = new Repository();
 
         presenter = new RoomsInstrumentPresenter(this);
         presenter.parseData();
@@ -102,7 +106,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(getActivity());
     }
 
     @Override

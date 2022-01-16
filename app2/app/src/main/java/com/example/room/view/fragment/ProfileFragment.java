@@ -1,6 +1,5 @@
 package com.example.room.view.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.room.R;
 import com.example.room.databinding.FragmentProfileBinding;
 import com.example.room.model.Customer;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.ProfilePresenter;
 import com.example.room.view.activity.ReservationActivity;
 
@@ -27,6 +27,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
     private TextView nameTextView;
     private TextView phoneTextView;
     private Customer customer;
+    private Repository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +38,8 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
         Button refreshButton = root.findViewById(R.id.refresh_button);
         nameTextView = root.findViewById(R.id.editName);
         phoneTextView = root.findViewById(R.id.editPhone);
+
+        repository = new Repository();
 
         presenter = new ProfilePresenter(this);
         presenter.setCustomer();
@@ -59,7 +62,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(getActivity());
     }
 
     @Override

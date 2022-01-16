@@ -1,7 +1,6 @@
 package com.example.room.view.fragment;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.room.R;
 import com.example.room.databinding.FragmentReserveBinding;
 import com.example.room.model.Room;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.ReservationPresenter;
 
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ public class ReservationFragment extends Fragment implements ReservationPresente
     private Spinner roomSpinner;
     private int currentPosition;
     private String selectedDate;
+    private Repository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class ReservationFragment extends Fragment implements ReservationPresente
 
         roomId = new ArrayList<>();
         roomName = new ArrayList<>();
+
+        repository = new Repository();
 
         presenter = new ReservationPresenter(this);
         presenter.parseRoomData();
@@ -90,7 +93,7 @@ public class ReservationFragment extends Fragment implements ReservationPresente
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(getActivity());
     }
 
     @Override

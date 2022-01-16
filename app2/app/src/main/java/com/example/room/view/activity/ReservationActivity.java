@@ -1,6 +1,5 @@
 package com.example.room.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.example.room.R;
 import com.example.room.adapter.ReservationAdapter;
 import com.example.room.model.Reservation;
 import com.example.room.model.gateways.Gateway;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.activity.ReservationPresenter;
 
 import java.util.ArrayList;
@@ -32,6 +32,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
     private ArrayList<String> roomName, roomPrice, reservationDate;
     private ImageView emptyImageView;
     private TextView emptyTextView;
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
         roomName = new ArrayList<>();
         roomPrice = new ArrayList<>();
         reservationDate = new ArrayList<>();
+
+        repository = new Repository();
 
         presenter = new ReservationPresenter(this);
         presenter.setReservations();
@@ -70,7 +73,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(this);
     }
 
     @Override

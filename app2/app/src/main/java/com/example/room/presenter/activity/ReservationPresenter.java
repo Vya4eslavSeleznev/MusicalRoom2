@@ -19,15 +19,20 @@ public class ReservationPresenter {
     }
 
     public void setReservations() {
-        reservationActivity.setReservations(gateway.getCustomerReservation(getToken(), getCustomer().getId()));
+        //reservationActivity.setReservations(gateway.getCustomerReservation(getToken(), getCustomer().getId()));
+        reservationActivity.setReservations(getCustomerReservation());
     }
 
     public void setRecycleView() {
-        reservationActivity.setRecycleView(gateway.getCustomerReservation(getToken(), getUserId()), gateway, getToken());
+        //List<Reservation> reservations = gateway.getCustomerReservation(getToken(), getUserId());
+
+        //reservationActivity.setRecycleView(reservations, gateway, getToken());
+
+        reservationActivity.setRecycleView(getCustomerReservation(), gateway, getToken());
     }
 
     public void confirmDialog() {
-        reservationActivity.confirmDialog(gateway, getToken(), getUserId());
+        reservationActivity.confirmDialog(gateway, getToken(), getCustomer().getId());
     }
 
     private Customer getCustomer() {
@@ -40,6 +45,10 @@ public class ReservationPresenter {
 
     private int getUserId() {
         return reservationActivity.getSharedPreferences().getInt("userId", 0);
+    }
+
+    private List<Reservation> getCustomerReservation() {
+        return gateway.getCustomerReservation(getToken(), getCustomer().getId());
     }
 
     public interface View {

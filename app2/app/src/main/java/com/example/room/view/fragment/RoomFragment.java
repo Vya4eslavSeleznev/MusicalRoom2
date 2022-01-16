@@ -1,6 +1,5 @@
 package com.example.room.view.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentRoomBinding;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.RoomPresenter;
 import com.example.room.view.activity.RoomActivity;
 
@@ -26,6 +26,7 @@ public class RoomFragment extends Fragment implements RoomPresenter.View {
     private EditText nameTextView;
     private EditText descriptionTextView;
     private EditText priceTextView;
+    private Repository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class RoomFragment extends Fragment implements RoomPresenter.View {
         priceTextView = root.findViewById(R.id.room_price_edit);
 
         presenter = new RoomPresenter(this);
+        repository = new Repository();
 
         addRoom.setOnClickListener(v -> presenter.addRoomEventLogic());
 
@@ -58,7 +60,7 @@ public class RoomFragment extends Fragment implements RoomPresenter.View {
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(getActivity());
     }
 
     @Override

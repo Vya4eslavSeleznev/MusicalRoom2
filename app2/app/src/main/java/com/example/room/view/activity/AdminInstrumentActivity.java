@@ -1,9 +1,7 @@
 package com.example.room.view.activity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
 import com.example.room.adapter.AdminInstrumentAdapter;
-import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Instrument;
+import com.example.room.model.gateways.Gateway;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.activity.AdminInstrumentPresenter;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
     private ArrayList<String> instrumentName, instrumentDescription;
     private ImageView emptyImageView;
     private TextView emptyTextView;
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,8 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
         instrumentName = new ArrayList<>();
         instrumentDescription = new ArrayList<>();
 
+        repository = new Repository();
+
         AdminInstrumentPresenter presenter = new AdminInstrumentPresenter(this);
         presenter.setInstruments();
         presenter.setDataInRecycleView();
@@ -46,23 +48,13 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(this);
     }
 
     @Override
     public void setInstruments(List<Instrument> instruments) {
-        if(instruments.size() == 0) {
-            emptyImageView.setVisibility(View.VISIBLE);
-            emptyTextView.setVisibility(View.VISIBLE);
-        } else {
-            for(int i = 0; i <= instruments.size() - 1; i++) {
-                instrumentName.add(instruments.get(i).getName());
-                instrumentDescription.add(instruments.get(i).getDescription());
-            }
-
-            emptyImageView.setVisibility(View.GONE);
-            emptyTextView.setVisibility(View.GONE);
-        }
+        repository.setInstruments(instruments, instrumentName, instrumentDescription,
+                emptyImageView, emptyTextView);
     }
 
     @Override
@@ -77,11 +69,7 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
     @Override
     public int getRoomId() {
         Bundle bundle = getIntent().getExtras();
-        int roomId = -1;
 
-        if(bundle != null)
-            roomId = bundle.getInt("roomId");
-
-        return roomId;
+        return repository.getRoomId(bundle);
     }
 }

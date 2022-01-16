@@ -1,10 +1,8 @@
 package com.example.room.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
 import com.example.room.adapter.AdminRoomAdapter;
-import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Room;
+import com.example.room.model.gateways.Gateway;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.activity.AdminRoomPresenter;
 
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
     private AdminRoomAdapter adminRoomAdapter;
     private ImageView emptyImageView;
     private TextView emptyTextView;
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,8 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
         roomDescription = new ArrayList<>();
         roomPrice = new ArrayList<>();
 
+        repository = new Repository();
+
         presenter = new AdminRoomPresenter(this);
         presenter.setRooms();
         presenter.setDataInRecycleView();
@@ -55,24 +57,12 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(this);
     }
 
     @Override
     public void setRooms(List<Room> rooms) {
-        if(rooms.size() == 0) {
-            emptyImageView.setVisibility(View.VISIBLE);
-            emptyTextView.setVisibility(View.VISIBLE);
-        } else {
-            for(int i = 0; i <= rooms.size() - 1; i++) {
-                roomName.add(rooms.get(i).getName());
-                roomDescription.add(rooms.get(i).getDescription());
-                roomPrice.add(rooms.get(i).getPrice().toString());
-            }
-
-            emptyImageView.setVisibility(View.GONE);
-            emptyTextView.setVisibility(View.GONE);
-        }
+        repository.setRooms(rooms, roomName, roomDescription, roomPrice, emptyImageView, emptyTextView);
     }
 
     @Override

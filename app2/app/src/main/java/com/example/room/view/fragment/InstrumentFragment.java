@@ -1,6 +1,5 @@
 package com.example.room.view.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentInstrumentBinding;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.InstrumentPresenter;
 import com.example.room.view.activity.InstrumentActivity;
 
@@ -25,6 +25,7 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
     private FragmentInstrumentBinding binding;
     private TextView nameTextView;
     private TextView descriptionTextView;
+    private Repository repository;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
         nameTextView = root.findViewById(R.id.instrument_name_edit);
         descriptionTextView = root.findViewById(R.id.instrument_description_edit);
 
+        repository = new Repository();
         presenter = new InstrumentPresenter(this);
 
         addInstrument.setOnClickListener(v -> presenter.addInstrumentEventLogic());
@@ -56,7 +58,7 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(getActivity());
     }
 
     @Override

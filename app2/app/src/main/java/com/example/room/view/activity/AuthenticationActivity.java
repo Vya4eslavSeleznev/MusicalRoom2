@@ -1,6 +1,5 @@
 package com.example.room.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.room.R;
 import com.example.room.model.Token;
+import com.example.room.presenter.Repository;
 import com.example.room.presenter.activity.AuthenticationPresenter;
 
 public class AuthenticationActivity extends AppCompatActivity implements AuthenticationPresenter.View{
@@ -19,6 +19,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     private AuthenticationPresenter presenter;
     private EditText login;
     private EditText password;
+    private Repository repository;
 
     public AuthenticationActivity() {
     }
@@ -32,13 +33,14 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         password = this.findViewById(R.id.authentication_editPassword);
         Button logInBtn = this.findViewById(R.id.log_in_button);
         presenter = new AuthenticationPresenter(this);
+        repository = new Repository();
 
         logInBtn.setOnClickListener(v -> presenter.logInEventLogic());
     }
 
     @Override
     public SharedPreferences getSharedPreferences() {
-        return this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+        return repository.getSharedPreferences(this);
     }
 
     @Override

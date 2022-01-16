@@ -20,7 +20,7 @@ public class EquipmentPresenter {
     }
 
     public void setRooms() {
-        equipmentFragment.roomSeparation(listOfRooms());
+        equipmentFragment.setRooms(listOfRooms());
     }
 
     public Intent adapterEventLogic(int position) {
@@ -38,7 +38,7 @@ public class EquipmentPresenter {
     public interface View {
 
         SharedPreferences getSharedPreferences();
-        void roomSeparation(List<Room> rooms);
+        void setRooms(List<Room> rooms);
         Intent adapterEventLogic(int position, List<Room> rooms);
         EquipmentRoomAdapter setRecycleView();
     }
