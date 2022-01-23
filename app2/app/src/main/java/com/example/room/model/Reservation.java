@@ -8,12 +8,14 @@ public class Reservation {
     private Date date;
     private Room room;
     private Customer customer;
+    private boolean confirmed;
 
-    public Reservation(int id, Date date, Room room, Customer customer) {
+    public Reservation(int id, Date date, Room room, Customer customer, boolean confirmed) {
         this.id = id;
         this.date = date;
         this.room = room;
         this.customer = customer;
+        this.confirmed = confirmed;
     }
 
     public int getId() {
@@ -46,5 +48,13 @@ public class Reservation {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 }

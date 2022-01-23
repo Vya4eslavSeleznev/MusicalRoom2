@@ -29,7 +29,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
 
     private ReservationPresenter presenter;
     private RecyclerView recyclerView;
-    private ArrayList<String> roomName, roomPrice, reservationDate;
+    private ArrayList<String> roomName, roomPrice, reservationDate, reservationConfirmation;
     private ImageView emptyImageView;
     private TextView emptyTextView;
     private Repository repository;
@@ -46,6 +46,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
         roomName = new ArrayList<>();
         roomPrice = new ArrayList<>();
         reservationDate = new ArrayList<>();
+        reservationConfirmation = new ArrayList<>();
 
         repository = new Repository();
 
@@ -86,6 +87,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
                 roomName.add(reservations.get(i).getRoom().getName());
                 roomPrice.add(reservations.get(i).getRoom().getPrice().toString());
                 reservationDate.add(reservations.get(i).getDate().toString());
+                reservationConfirmation.add(String.valueOf(reservations.get(i).isConfirmed()));
             }
 
             emptyImageView.setVisibility(View.GONE);
@@ -96,7 +98,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
     @Override
     public void setRecycleView(List<Reservation> reservations, Gateway gateway, String token) {
         ReservationAdapter reservationAdapter = new ReservationAdapter(ReservationActivity.this,
-                roomName, roomPrice,  reservationDate, reservations, gateway, token);
+                roomName, roomPrice,  reservationDate, reservations, reservationConfirmation, gateway, token);
 
         recyclerView.removeAllViewsInLayout();
         recyclerView.setAdapter(reservationAdapter);

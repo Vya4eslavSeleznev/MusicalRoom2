@@ -30,13 +30,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     private final ArrayList<String> roomName;
     private final ArrayList<String> roomPrice;
     private final ArrayList<String> reservationDate;
+    private final ArrayList<String> reservationConfirmed;
     private final List<Reservation> reservations;
     private final Gateway gateway;
     private final String token;
 
     public ReservationAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomPrice,
                               ArrayList<String> reservationDate, List<Reservation> reservations,
-                              Gateway gateway, String token) {
+                              ArrayList<String> reservationConfirmed, Gateway gateway, String token) {
         this.context = context;
         this.roomName = roomName;
         this.roomPrice = roomPrice;
@@ -44,6 +45,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         this.reservations = reservations;
         this.gateway = gateway;
         this.token = token;
+        this.reservationConfirmed = reservationConfirmed;
     }
 
     @NonNull
@@ -59,8 +61,17 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     @Override
     public void onBindViewHolder(@NonNull @NotNull ReservationAdapter.ViewHolder holder, int position) {
         holder.roomNameTxt.setText(String.valueOf(roomName.get(position)));
-        holder.priceTxt.setText(String.valueOf(roomPrice.get(position)));
+
+        String price = roomPrice.get(position) + "$";
+        holder.priceTxt.setText(price);
+
         holder.dateTxt.setText(String.valueOf(reservationDate.get(position)));
+
+        if (reservationConfirmed.get(position).equals("false"))
+            holder.confirmationTxt.setText(R.string.not_confirmed);
+        else
+            holder.confirmationTxt.setText(R.string.confirmed);
+
     }
 
     @Override
@@ -73,6 +84,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         private final TextView roomNameTxt;
         private final TextView priceTxt;
         private final TextView dateTxt;
+        private final TextView confirmationTxt;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -80,6 +92,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             roomNameTxt = itemView.findViewById(R.id.reservation_room_name_textView);
             priceTxt = itemView.findViewById(R.id.reservation_price_textView);
             dateTxt = itemView.findViewById(R.id.reservation_date_or_description_textView);
+            confirmationTxt = itemView.findViewById(R.id.reservation_confirmation_textView);
             LinearLayout mainLayout = itemView.findViewById(R.id.reservation_layout);
             Button deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
             Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);

@@ -42,6 +42,8 @@
     <string name="sign_up">Sign up</string>
     <string name="role">Role</string>
     <string name="homeInfo">Welcome to the music studio! Our company has been operating since 1994. Such stars as Alla Pugacheva, Philip Kirkorov and many others worked with us. Order your music room as soon as possible!</string>
+    <string name="not_confirmed">Not confirmed</string>
+    <string name="confirmed">Confirmed</string>
 
     <string-array name="roles">
         <item>User</item>

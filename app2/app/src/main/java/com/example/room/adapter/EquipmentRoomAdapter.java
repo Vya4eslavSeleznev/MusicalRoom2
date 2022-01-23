@@ -49,7 +49,9 @@ public class EquipmentRoomAdapter extends RecyclerView.Adapter<EquipmentRoomAdap
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.roomNameTxt.setText(String.valueOf(roomName.get(position)));
         holder.roomDescriptionTxt.setText(String.valueOf(roomDescription.get(position)));
-        holder.roomPriceTxt.setText(String.valueOf(roomPrice.get(position)));
+
+        String price = roomPrice.get(position) + "$";
+        holder.roomPriceTxt.setText(price);
     }
 
     @Override
