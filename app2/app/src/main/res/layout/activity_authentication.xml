@@ -10,6 +10,22 @@
     android:orientation="vertical"
     tools:context=".view.activity.AuthenticationActivity">
 
+    <Button
+        android:id="@+id/sign_up_button"
+        android:layout_width="152dp"
+        android:layout_height="62dp"
+        android:backgroundTint="@color/grey"
+        android:fontFamily="@font/faster_one"
+        android:text="@string/sign_up"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.848" />
+
     <EditText
         android:id="@+id/authentication_editLogin"
         android:layout_width="wrap_content"
@@ -71,14 +87,14 @@
         app:layout_constraintVertical_bias="0.424" />
 
     <Button
-        android:id="@+id/log_in_button"
-        android:layout_width="126dp"
-        android:layout_height="70dp"
+        android:id="@+id/sign_in_button"
+        android:layout_width="152dp"
+        android:layout_height="62dp"
         android:backgroundTint="@color/grey"
         android:fontFamily="@font/faster_one"
-        android:text="@string/log_in"
-        android:textSize="20dp"
+        android:text="@string/sign_in"
         android:textColor="@android:color/white"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

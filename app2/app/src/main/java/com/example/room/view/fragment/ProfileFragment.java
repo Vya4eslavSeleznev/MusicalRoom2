@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
         if(!nameTextView.getText().toString().matches("") ||
                 !phoneTextView.getText().toString().matches("") ||
                 (nameTextView.getText().toString().matches("") &&
-                 phoneTextView.getText().toString().matches("")))
+                        phoneTextView.getText().toString().matches("")))
         {
             presenter.updateCustomer(token, this.customer.getId(),
                     nameTextView.getText().toString(), phoneTextView.getText().toString());

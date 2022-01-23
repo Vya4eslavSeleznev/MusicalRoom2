@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Room"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.AdminRoomActivity"></activity>
+        <activity android:name=".view.activity.SignUpActivity"></activity>
+        <activity android:name=".view.activity.AdminRoomActivity" />
         <activity android:name=".view.activity.AdminInstrumentActivity" />
         <activity android:name=".view.activity.EquipmentInstrumentActivity" />
         <activity android:name=".view.activity.UserActivity" />

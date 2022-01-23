@@ -31,11 +31,17 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
         login = this.findViewById(R.id.authentication_editLogin);
         password = this.findViewById(R.id.authentication_editPassword);
-        Button logInBtn = this.findViewById(R.id.log_in_button);
+        Button signInBtn = this.findViewById(R.id.sign_in_button);
+        Button signUpBtn = this.findViewById(R.id.sign_up_button);
         presenter = new AuthenticationPresenter(this);
         repository = new Repository();
 
-        logInBtn.setOnClickListener(v -> presenter.logInEventLogic());
+        signInBtn.setOnClickListener(v -> presenter.logInEventLogic());
+
+        signUpBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override

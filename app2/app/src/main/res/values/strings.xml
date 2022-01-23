@@ -38,7 +38,8 @@
     <string name="instrument_name">Instrument Name</string>
     <string name="view_equipment">View Equipment</string>
     <string name="add_equipment">Add Equipment</string>
-    <string name="log_in">Log in</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
     <string name="role">Role</string>
     <string name="homeInfo">Welcome to the music studio! Our company has been operating since 1994. Such stars as Alla Pugacheva, Philip Kirkorov and many others worked with us. Order your music room as soon as possible!</string>
 
