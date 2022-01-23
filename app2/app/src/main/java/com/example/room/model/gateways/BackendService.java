@@ -10,10 +10,8 @@ import com.example.room.model.Registration;
 import com.example.room.model.Reservation;
 import com.example.room.model.ReservationCreate;
 import com.example.room.model.Room;
-import com.example.room.model.RoomsInstrument;
 import com.example.room.model.Token;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,6 +20,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface BackendService {
@@ -78,4 +77,10 @@ public interface BackendService {
 
     @DELETE("/data/instrument/{id}")
     Call<Void> deleteInstrument(@Header("Authorization") String token, @Path("id") int id);
+
+    @PUT("/reservations/{id}")
+    Call<Void> confirmReservation(@Header("Authorization") String token, @Path("id") int id);
+
+    @GET("/reservations/all")
+    Call<List<Reservation>> getAllReservations(@Header("Authorization") String token);
 }

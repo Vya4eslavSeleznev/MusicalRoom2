@@ -251,4 +251,28 @@ public class Gateway {
             e.printStackTrace();
         }
     }
+
+    public void confirmReservation(String token, int reservationId) {
+        Call<Void> reservation = service.confirmReservation(token, reservationId);
+
+        try {
+            reservation.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Reservation> getAllReservations(String token) {
+        Call<List<Reservation>> reservations = service.getAllReservations(token);
+
+        try {
+            Response<List<Reservation>> response = reservations.execute();
+
+            return response.body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

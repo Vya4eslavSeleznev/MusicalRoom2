@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,20 +78,8 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
 
     @Override
     public void setReservations(List<Reservation> reservations) {
-        if(reservations.size() == 0) {
-            emptyImageView.setVisibility(View.VISIBLE);
-            emptyTextView.setVisibility(View.VISIBLE);
-        } else {
-            for(int i = 0; i <= reservations.size() - 1; i++) {
-                roomName.add(reservations.get(i).getRoom().getName());
-                roomPrice.add(reservations.get(i).getRoom().getPrice().toString());
-                reservationDate.add(reservations.get(i).getDate().toString());
-                reservationConfirmation.add(String.valueOf(reservations.get(i).isConfirmed()));
-            }
-
-            emptyImageView.setVisibility(View.GONE);
-            emptyTextView.setVisibility(View.GONE);
-        }
+        repository.setReservations(reservations, roomName, roomPrice, reservationDate,
+                reservationConfirmation, emptyImageView, emptyTextView);
     }
 
     @Override

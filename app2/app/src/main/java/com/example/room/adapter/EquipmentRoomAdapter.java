@@ -18,14 +18,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class EquipmentRoomAdapter extends RecyclerView.Adapter<EquipmentRoomAdapter.ViewHolder>{
+public class EquipmentRoomAdapter extends RecyclerView.Adapter<EquipmentRoomAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<String> roomName;
     private final ArrayList<String> roomDescription;
     private final ArrayList<String> roomPrice;
     private OnItemClickListener listener;
-
 
     public EquipmentRoomAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomDescription,
                                 ArrayList<String> roomPrice) {

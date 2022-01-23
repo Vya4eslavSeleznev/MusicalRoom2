@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.room.model.Instrument;
+import com.example.room.model.Reservation;
 import com.example.room.model.Room;
 
 import java.util.ArrayList;
@@ -47,6 +48,26 @@ public class Repository {
                 roomName.add(rooms.get(i).getName());
                 roomDescription.add(rooms.get(i).getDescription());
                 roomPrice.add(rooms.get(i).getPrice().toString());
+            }
+
+            emptyImageView.setVisibility(View.GONE);
+            emptyTextView.setVisibility(View.GONE);
+        }
+    }
+
+    public void setReservations(List<Reservation> reservations, ArrayList<String> roomName,
+                                ArrayList<String> roomPrice, ArrayList<String> reservationDate,
+                                ArrayList<String> reservationConfirmation, ImageView emptyImageView,
+                                TextView emptyTextView) {
+        if(reservations.size() == 0) {
+            emptyImageView.setVisibility(View.VISIBLE);
+            emptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            for(int i = 0; i <= reservations.size() - 1; i++) {
+                roomName.add(reservations.get(i).getRoom().getName());
+                roomPrice.add(reservations.get(i).getRoom().getPrice().toString());
+                reservationDate.add(reservations.get(i).getDate().toString());
+                reservationConfirmation.add(String.valueOf(reservations.get(i).isConfirmed()));
             }
 
             emptyImageView.setVisibility(View.GONE);

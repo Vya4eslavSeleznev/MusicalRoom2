@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_customer"
-        android:name="com.example.room.view.fragment.CustomerFragment"
+        android:name="com.example.room.view.fragment.ConfirmationFragment"
         android:label="@string/title_customer"
-        tools:layout="@layout/fragment_customer" />
+        tools:layout="@layout/fragment_confirmation" />
 
     <fragment
         android:id="@+id/navigation_room"
