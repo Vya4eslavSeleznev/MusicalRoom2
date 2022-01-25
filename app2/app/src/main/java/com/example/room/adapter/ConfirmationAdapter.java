@@ -1,7 +1,6 @@
 package com.example.room.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room.R;
 import com.example.room.model.Reservation;
 import com.example.room.model.gateways.Gateway;
-import com.example.room.view.activity.AdminActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,9 +32,12 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
     private final Gateway gateway;
     private final String token;
 
+    private final LayoutInflater inflater;
+    private final ViewGroup container;
+
     public ConfirmationAdapter(Context context, ArrayList<String> roomName, ArrayList<String> reservationDate,
                                ArrayList<String> reservationConfirmed, List<Reservation> reservations,
-                               Gateway gateway, String token) {
+                               Gateway gateway, String token, LayoutInflater inflater, ViewGroup container) {
         this.context = context;
         this.roomName = roomName;
         this.reservationDate = reservationDate;
@@ -44,6 +45,8 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
         this.reservations = reservations;
         this.gateway = gateway;
         this.token = token;
+        this.inflater = inflater;
+        this.container = container;
     }
 
     @NonNull
@@ -92,9 +95,8 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
             confirmBtn.setOnClickListener(v -> {
                 gateway.confirmReservation(token, reservations.get(getAdapterPosition()).getId());
 
-
-                Intent intent = new Intent(context, AdminActivity.class);
-                context.startActivity(intent);
+                //Intent intent = new Intent(context, AdminActivity.class);
+                //context.startActivity(intent);
             });
         }
     }

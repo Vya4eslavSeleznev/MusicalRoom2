@@ -10,6 +10,7 @@ import com.example.room.model.Registration;
 import com.example.room.model.Reservation;
 import com.example.room.model.ReservationCreate;
 import com.example.room.model.Room;
+import com.example.room.model.RoomsInstrument;
 import com.example.room.model.Token;
 
 import java.util.List;
@@ -83,4 +84,10 @@ public interface BackendService {
 
     @GET("/reservations/all")
     Call<List<Reservation>> getAllReservations(@Header("Authorization") String token);
+
+    @GET("/rooms/instruments")
+    Call<List<RoomsInstrument>> getAllRoomsInstrument(@Header("Authorization") String token);
+
+    @DELETE("/data/room_instrument/{id}")
+    Call<Void> deleteRoomsInstrument(@Header("Authorization") String token, @Path("id") int id);
 }

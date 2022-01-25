@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstrumentAdapter extends RecyclerView.Adapter<InstrumentAdapter.ViewHolder>{
+public class InstrumentAdapter extends RecyclerView.Adapter<InstrumentAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<String> instrumentName;

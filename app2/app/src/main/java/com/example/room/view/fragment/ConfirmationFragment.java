@@ -33,11 +33,18 @@ public class ConfirmationFragment extends Fragment implements ConfirmationPresen
     private ConfirmationPresenter presenter;
     private Repository repository;
     private ArrayList<String> roomName, roomPrice, reservationDate, reservationConfirmed;
+    private ConfirmationAdapter reservationAdapter;
+
+    private ViewGroup container;
+    LayoutInflater inflater;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentConfirmationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        this.container = container;
+        this.inflater = inflater;
 
         recyclerView = root.findViewById(R.id.confirmation_recyclerview);
         emptyImageView = root.findViewById(R.id.confirmation_empty_imageView);
@@ -75,12 +82,16 @@ public class ConfirmationFragment extends Fragment implements ConfirmationPresen
     }
 
     @Override
-    public void setRecycleView(List<Reservation> reservations, Gateway gateway,
-                                              String token) {
-        ConfirmationAdapter reservationAdapter = new ConfirmationAdapter(getActivity(), roomName,
-                reservationDate, reservationConfirmed, reservations, gateway, token);
+    public void setRecycleView(List<Reservation> reservations, Gateway gateway,String token) {
+        reservationAdapter = new ConfirmationAdapter(getActivity(), roomName, reservationDate,
+                reservationConfirmed, reservations, gateway, token, inflater, container);
 
         recyclerView.setAdapter(reservationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    @Override
+    public void updateRecycleView() {
+        reservationAdapter.notifyDataSetChanged();
     }
 }

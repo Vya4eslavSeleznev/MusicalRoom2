@@ -19,7 +19,7 @@ import com.example.room.presenter.activity.InstrumentPresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstrumentActivity extends AppCompatActivity implements InstrumentPresenter.View{
+public class InstrumentActivity extends AppCompatActivity implements InstrumentPresenter.View {
 
     private RecyclerView recyclerView;
     private ArrayList<String> instrumentName, instrumentDescription;

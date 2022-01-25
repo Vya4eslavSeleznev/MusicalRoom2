@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_customer"
         android:name="com.example.room.view.fragment.ConfirmationFragment"
-        android:label="@string/title_customer"
+        android:label="@string/title_confirmation"
         tools:layout="@layout/fragment_confirmation" />
 
     <fragment

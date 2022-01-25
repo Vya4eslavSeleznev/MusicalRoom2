@@ -21,7 +21,7 @@
     <string name="booked_rooms">My Reservations</string>
     <string name="deleteAll">Delete All</string>
     <string name="noData">No data</string>
-    <string name="title_customer">Customer</string>
+    <string name="title_confirmation">Confirmation</string>
     <string name="title_room">Room</string>
     <string name="title_instrument">Instrument</string>
     <string name="title_rooms_instrument">Rooms Instrument</string>

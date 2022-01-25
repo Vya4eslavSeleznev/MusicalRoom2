@@ -1,6 +1,7 @@
 package com.example.room.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.MutableInt;
@@ -22,6 +23,7 @@ import com.example.room.model.Instrument;
 import com.example.room.model.Room;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.RoomsInstrumentPresenter;
+import com.example.room.view.activity.RoomsInstrumentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
         roomSpinner = root.findViewById(R.id.room_spinner);
         instrumentSpinner = root.findViewById(R.id.instrument_spinner);
         Button addEquipmentButton = root.findViewById(R.id.add_equipment_button);
+        Button viewEquipmentButton = root.findViewById(R.id.view_equipment_button);
 
         roomId = new ArrayList<>();
         roomName = new ArrayList<>();
@@ -93,6 +96,11 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
                     (long) presenter.getInstruments().get(instrumentCurrentPosition.value).getId());
 
             Toast.makeText(context, "Successful!", Toast.LENGTH_SHORT).show();
+        });
+
+        viewEquipmentButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), RoomsInstrumentActivity.class);
+            startActivity(intent);
         });
 
         return root;

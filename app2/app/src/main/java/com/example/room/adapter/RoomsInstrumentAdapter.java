@@ -1,11 +1,13 @@
 package com.example.room.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,30 +15,33 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
+import com.example.room.model.RoomsInstrument;
+import com.example.room.model.gateways.Gateway;
+import com.example.room.view.activity.RoomsInstrumentActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrumentAdapter.ViewHolder>{
+public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrumentAdapter.ViewHolder> {
 
     private final Context context;
+    private final List<RoomsInstrument> roomsInstrument;
     private final ArrayList<String> roomName;
-    private final ArrayList<String> roomPrice;
-    private final ArrayList<String> roomDescription;
     private final ArrayList<String> instrumentName;
-    private final ArrayList<String> instrumentDescription;
-    private OnItemClickListener listener;
+    private final Gateway gateway;
+    private final String token;
 
-    public RoomsInstrumentAdapter(Context context, ArrayList<String> roomName, ArrayList<String> roomPrice,
-                                  ArrayList<String> roomDescription, ArrayList<String> instrumentName,
-                                  ArrayList<String> instrumentDescription) {
+    public RoomsInstrumentAdapter(Context context, List<RoomsInstrument> roomsInstrument,
+                                  ArrayList<String> roomName, ArrayList<String> instrumentName,
+                                  Gateway gateway, String token) {
         this.context = context;
+        this.roomsInstrument = roomsInstrument;
         this.roomName = roomName;
-        this.roomPrice = roomPrice;
-        this.roomDescription = roomDescription;
         this.instrumentName = instrumentName;
-        this.instrumentDescription = instrumentDescription;
+        this.gateway = gateway;
+        this.token = token;
     }
 
     @NonNull
@@ -46,16 +51,13 @@ public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrument
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.rooms_instrument_row, parent, false);
 
-        return new RoomsInstrumentAdapter.ViewHolder(view, this.listener);
+        return new RoomsInstrumentAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.roomNameTxt.setText(String.valueOf(roomName.get(position)));
-        holder.priceTxt.setText(String.valueOf(roomPrice.get(position)));
-        holder.roomDescriptionTxt.setText(String.valueOf(roomDescription.get(position)));
         holder.instrumentNameTxt.setText(String.valueOf(instrumentName.get(position)));
-        holder.instrumentDescriptionTxt.setText(String.valueOf(instrumentDescription.get(position)));
     }
 
     @Override
@@ -63,53 +65,29 @@ public class RoomsInstrumentAdapter extends RecyclerView.Adapter<RoomsInstrument
         return roomName.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return super.getItemViewType(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
-
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView roomNameTxt;
-        private final TextView priceTxt;
-        private final TextView roomDescriptionTxt;
         private final TextView instrumentNameTxt;
-        private final TextView instrumentDescriptionTxt;
 
-        public ViewHolder(@NonNull @NotNull View itemView, OnItemClickListener listener) {
+        public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            roomNameTxt = itemView.findViewById(R.id.room_name_textView);
-            priceTxt = itemView.findViewById(R.id.price_textView);
-            roomDescriptionTxt = itemView.findViewById(R.id.room_description_textView);
-            instrumentNameTxt = itemView.findViewById(R.id.instrument_name_textView);
-            instrumentDescriptionTxt = itemView.findViewById(R.id.instrument_description_textView);
+            roomNameTxt = itemView.findViewById(R.id.roomsinstrument_room_name_textView);
+            instrumentNameTxt = itemView.findViewById(R.id.roomsinstrument_instrument_name_textView);
+            Button deleteBtn = itemView.findViewById(R.id.rooms_instrument_delete_button);
             LinearLayout mainLayout = itemView.findViewById(R.id.rooms_instrument_layout);
             Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 
-            itemView.setOnClickListener(v -> {
-                if(listener != null) {
-                    int position = getAdapterPosition();
+            deleteBtn.setOnClickListener(v -> {
+                gateway.deleteRoomsInstrument(token, roomsInstrument.get(getAdapterPosition()).getId());
+                roomsInstrument.remove(getAdapterPosition());
 
-                    if(position != RecyclerView.NO_POSITION) {
-                        listener.onItemClick(position);
-                    }
-                }
+                Intent intent = new Intent(context, RoomsInstrumentActivity.class);
+                context.startActivity(intent);
             });
+
+
         }
     }
 }

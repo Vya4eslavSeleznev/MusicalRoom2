@@ -12,6 +12,7 @@ import com.example.room.model.Registration;
 import com.example.room.model.Reservation;
 import com.example.room.model.ReservationCreate;
 import com.example.room.model.Room;
+import com.example.room.model.RoomsInstrument;
 import com.example.room.model.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -274,5 +275,29 @@ public class Gateway {
         }
 
         return null;
+    }
+
+    public List<RoomsInstrument> getAllRoomsInstrument(String token) {
+        Call<List<RoomsInstrument>> roomsInstrument = service.getAllRoomsInstrument(token);
+
+        try {
+            Response<List<RoomsInstrument>> response = roomsInstrument.execute();
+
+            return response.body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void deleteRoomsInstrument(String token, int roomId) {
+        Call<Void> roomsInstrument = service.deleteRoomsInstrument(token, roomId);
+
+        try {
+            roomsInstrument.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

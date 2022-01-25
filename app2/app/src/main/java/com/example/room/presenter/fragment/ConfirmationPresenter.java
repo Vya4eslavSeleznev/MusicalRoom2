@@ -39,7 +39,7 @@ public class ConfirmationPresenter {
 
         SharedPreferences getSharedPreferences();
         void setReservations(List<Reservation> reservations);
-        void setRecycleView(List<Reservation> reservations, Gateway gateway,
-                                           String token);
+        void setRecycleView(List<Reservation> reservations, Gateway gateway, String token);
+        void updateRecycleView();
     }
 }
