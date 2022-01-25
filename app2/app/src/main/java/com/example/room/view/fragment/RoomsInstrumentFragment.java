@@ -34,7 +34,6 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
     private FragmentRoomsInstrumentBinding binding;
     private Context context;
     private ArrayList<String> instrumentName, roomName;
-    private ArrayList<Integer> instrumentId, roomId;
     private Spinner roomSpinner;
     private Spinner instrumentSpinner;
     private MutableInt roomCurrentPosition;
@@ -52,9 +51,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
         Button addEquipmentButton = root.findViewById(R.id.add_equipment_button);
         Button viewEquipmentButton = root.findViewById(R.id.view_equipment_button);
 
-        roomId = new ArrayList<>();
         roomName = new ArrayList<>();
-        instrumentId = new ArrayList<>();
         instrumentName = new ArrayList<>();
 
         repository = new Repository();
@@ -120,7 +117,6 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
     @Override
     public void parseRoomData(List<Room> rooms) {
         for(int i = 0; i <= rooms.size() - 1; i++) {
-            roomId.add(rooms.get(i).getId());
             roomName.add(rooms.get(i).getName());
         }
     }
@@ -128,7 +124,6 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
     @Override
     public void parseInstrumentData(List<Instrument> instruments) {
         for(int i = 0; i <= instruments.size() - 1; i++) {
-            instrumentId.add(instruments.get(i).getId());
             instrumentName.add(instruments.get(i).getName());
         }
     }

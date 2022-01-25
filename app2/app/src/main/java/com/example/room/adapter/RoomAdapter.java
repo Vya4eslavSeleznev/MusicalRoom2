@@ -50,7 +50,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.reservation_row, parent, false);
+        View view = inflater.inflate(R.layout.admin_room_row, parent, false);
 
         return new RoomAdapter.ViewHolder(view);
     }
@@ -59,7 +59,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.roomNameTxt.setText(String.valueOf(roomName.get(position)));
         holder.roomDescriptionTxt.setText(String.valueOf(roomDescription.get(position)));
-        holder.roomPriceTxt.setText(String.valueOf(roomPrice.get(position)));
+
+        String price = roomPrice.get(position) + "$";
+        holder.roomPriceTxt.setText(price);
     }
 
     @Override
@@ -76,11 +78,11 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            roomNameTxt = itemView.findViewById(R.id.reservation_room_name_textView);
-            roomDescriptionTxt = itemView.findViewById(R.id.reservation_date_or_description_textView);
-            roomPriceTxt = itemView.findViewById(R.id.reservation_price_textView);
-            LinearLayout mainLayout = itemView.findViewById(R.id.reservation_layout);
-            Button deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
+            roomNameTxt = itemView.findViewById(R.id.admin_room_name_textView);
+            roomDescriptionTxt = itemView.findViewById(R.id.admin_room_description_textView);
+            roomPriceTxt = itemView.findViewById(R.id.admin_room_price_textView);
+            LinearLayout mainLayout = itemView.findViewById(R.id.admin_room_layout);
+            Button deleteBtn = itemView.findViewById(R.id.admin_room_delete_button);
             Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
 

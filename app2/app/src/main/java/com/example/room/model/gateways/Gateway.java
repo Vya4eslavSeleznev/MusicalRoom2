@@ -26,16 +26,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Gateway {
-    private Retrofit retrofit;
 
-    private BackendService service;
+    private final BackendService service;
 
     public Gateway() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd")
                 .create();
 
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.15.101:8080")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
