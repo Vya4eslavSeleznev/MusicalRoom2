@@ -87,10 +87,10 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
         ReservationAdapter reservationAdapter = new ReservationAdapter(ReservationActivity.this,
                 roomName, roomPrice,  reservationDate, reservations, reservationConfirmation, gateway, token);
 
-        recyclerView.removeAllViewsInLayout();
-        recyclerView.setAdapter(reservationAdapter);
+        //recyclerView.removeAllViewsInLayout();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(ReservationActivity.this));
-        reservationAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(reservationAdapter);
     }
 
     @Override
@@ -110,5 +110,10 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
         });
 
         builder.create().show();
+    }
+
+    @Override
+    public void test(int position) {
+        recyclerView.removeViewAt(position);
     }
 }

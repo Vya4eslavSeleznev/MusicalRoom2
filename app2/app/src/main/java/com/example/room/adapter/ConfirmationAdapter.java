@@ -32,12 +32,9 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
     private final Gateway gateway;
     private final String token;
 
-    private final LayoutInflater inflater;
-    private final ViewGroup container;
-
     public ConfirmationAdapter(Context context, ArrayList<String> roomName, ArrayList<String> reservationDate,
                                ArrayList<String> reservationConfirmed, List<Reservation> reservations,
-                               Gateway gateway, String token, LayoutInflater inflater, ViewGroup container) {
+                               Gateway gateway, String token) {
         this.context = context;
         this.roomName = roomName;
         this.reservationDate = reservationDate;
@@ -45,8 +42,6 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
         this.reservations = reservations;
         this.gateway = gateway;
         this.token = token;
-        this.inflater = inflater;
-        this.container = container;
     }
 
     @NonNull
@@ -68,6 +63,12 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
             holder.confirmationTxt.setText(R.string.not_confirmed);
         else
             holder.confirmationTxt.setText(R.string.confirmed);
+
+        holder.confirmBtn.setOnClickListener(v -> {
+            gateway.confirmReservation(token, reservations.get(position).getId());
+            reservationConfirmed.set(position, "true");
+            notifyItemChanged(position);
+        });
     }
 
     @Override
@@ -80,6 +81,7 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
         private final TextView roomNameTxt;
         private final TextView dateTxt;
         private final TextView confirmationTxt;
+        private final Button confirmBtn;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -88,16 +90,9 @@ public class ConfirmationAdapter extends RecyclerView.Adapter<ConfirmationAdapte
             dateTxt = itemView.findViewById(R.id.confirmation_date_textView);
             confirmationTxt = itemView.findViewById(R.id.confirmation_textView);
             LinearLayout mainLayout = itemView.findViewById(R.id.confirmation_layout);
-            Button confirmBtn = itemView.findViewById(R.id.confirmation_button);
+            confirmBtn = itemView.findViewById(R.id.confirmation_button);
             Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
-
-            confirmBtn.setOnClickListener(v -> {
-                gateway.confirmReservation(token, reservations.get(getAdapterPosition()).getId());
-
-                //Intent intent = new Intent(context, AdminActivity.class);
-                //context.startActivity(intent);
-            });
         }
     }
 }

@@ -18,8 +18,6 @@ public class ConfirmationPresenter {
     }
 
     public void setReservations() {
-        int userId = confirmationFragment.getSharedPreferences().getInt("userId", 0);
-
         confirmationFragment.setReservations(getReservations());
     }
 
@@ -40,6 +38,5 @@ public class ConfirmationPresenter {
         SharedPreferences getSharedPreferences();
         void setReservations(List<Reservation> reservations);
         void setRecycleView(List<Reservation> reservations, Gateway gateway, String token);
-        void updateRecycleView();
     }
 }

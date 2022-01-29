@@ -1,7 +1,6 @@
 package com.example.room.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
-import com.example.room.view.activity.ReservationActivity;
-import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Reservation;
+import com.example.room.model.gateways.Gateway;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,6 +70,18 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         else
             holder.confirmationTxt.setText(R.string.confirmed);
 
+        holder.deleteBtn.setOnClickListener(v -> {
+            gateway.deleteReservation(token, reservations.get(position).getId());
+            reservations.remove(position);
+
+            roomName.remove(position);
+            roomPrice.remove(position);
+            reservationDate.remove(position);
+
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, reservations.size());
+        });
+
     }
 
     @Override
@@ -85,6 +95,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         private final TextView priceTxt;
         private final TextView dateTxt;
         private final TextView confirmationTxt;
+        private final Button deleteBtn;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -94,17 +105,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
             dateTxt = itemView.findViewById(R.id.reservation_date_or_description_textView);
             confirmationTxt = itemView.findViewById(R.id.reservation_confirmation_textView);
             LinearLayout mainLayout = itemView.findViewById(R.id.reservation_layout);
-            Button deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
+            deleteBtn = itemView.findViewById(R.id.reservation_delete_button);
             Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
-
-            deleteBtn.setOnClickListener(v -> {
-                gateway.deleteReservation(token, reservations.get(getAdapterPosition()).getId());
-                reservations.remove(getAdapterPosition());
-
-                Intent intent = new Intent(context, ReservationActivity.class);
-                context.startActivity(intent);
-            });
         }
     }
 }
