@@ -1,7 +1,6 @@
 package com.example.room.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.room.R;
-import com.example.room.view.activity.RoomActivity;
-import com.example.room.model.gateways.Gateway;
 import com.example.room.model.Room;
+import com.example.room.model.gateways.Gateway;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -62,6 +60,18 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
 
         String price = roomPrice.get(position) + "$";
         holder.roomPriceTxt.setText(price);
+
+        holder.deleteBtn.setOnClickListener(v -> {
+            gateway.deleteRoom(token, rooms.get(position).getId());
+
+            rooms.remove(position);
+            roomName.remove(position);
+            roomDescription.remove(position);
+            roomPrice.remove(position);
+
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, rooms.size());
+        });
     }
 
     @Override
@@ -74,6 +84,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
         private final TextView roomNameTxt;
         private final TextView roomDescriptionTxt;
         private final TextView roomPriceTxt;
+        private final Button deleteBtn;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -82,17 +93,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
             roomDescriptionTxt = itemView.findViewById(R.id.admin_room_description_textView);
             roomPriceTxt = itemView.findViewById(R.id.admin_room_price_textView);
             LinearLayout mainLayout = itemView.findViewById(R.id.admin_room_layout);
-            Button deleteBtn = itemView.findViewById(R.id.admin_room_delete_button);
+            deleteBtn = itemView.findViewById(R.id.admin_room_delete_button);
             Animation translateAnim = AnimationUtils.loadAnimation(context, R.anim.translate_anim);
             mainLayout.setAnimation(translateAnim);
-
-            deleteBtn.setOnClickListener(v -> {
-                gateway.deleteRoom(token, rooms.get(getAdapterPosition()).getId());
-                rooms.remove(getAdapterPosition());
-
-                Intent intent = new Intent(context, RoomActivity.class);
-                context.startActivity(intent);
-            });
         }
     }
 }

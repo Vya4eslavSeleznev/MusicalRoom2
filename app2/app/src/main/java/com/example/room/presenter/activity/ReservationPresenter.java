@@ -27,7 +27,7 @@ public class ReservationPresenter {
     }
 
     public void confirmDialog() {
-        reservationActivity.confirmDialog(gateway, getToken(), getCustomer().getId());
+        reservationActivity.confirmDialog(gateway, getToken(), getCustomer().getId(), getCustomerReservation());
     }
 
     private Customer getCustomer() {
@@ -46,18 +46,11 @@ public class ReservationPresenter {
         return gateway.getCustomerReservation(getToken(), getCustomer().getId());
     }
 
-
-    public void test(int position) {
-        reservationActivity.test(position);
-    }
-
-
     public interface View {
 
         SharedPreferences getSharedPreferences();
         void setReservations(List<Reservation> reservations);
         void setRecycleView(List<Reservation> reservations, Gateway gateway, String token);
-        void confirmDialog(Gateway gateway, String token, int userId);
-        void test(int position);
+        void confirmDialog(Gateway gateway, String token, int userId, List<Reservation> reservations);
     }
 }

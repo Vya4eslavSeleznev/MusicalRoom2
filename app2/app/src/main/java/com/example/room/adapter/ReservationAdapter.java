@@ -72,8 +72,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.deleteBtn.setOnClickListener(v -> {
             gateway.deleteReservation(token, reservations.get(position).getId());
-            reservations.remove(position);
 
+            reservations.remove(position);
             roomName.remove(position);
             roomPrice.remove(position);
             reservationDate.remove(position);

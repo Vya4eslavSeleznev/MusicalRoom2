@@ -1,6 +1,5 @@
 package com.example.room.view.activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,6 +31,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
     private ImageView emptyImageView;
     private TextView emptyTextView;
     private Repository repository;
+    private ReservationAdapter reservationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,36 +84,33 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
 
     @Override
     public void setRecycleView(List<Reservation> reservations, Gateway gateway, String token) {
-        ReservationAdapter reservationAdapter = new ReservationAdapter(ReservationActivity.this,
+        reservationAdapter = new ReservationAdapter(ReservationActivity.this,
                 roomName, roomPrice,  reservationDate, reservations, reservationConfirmation, gateway, token);
-
-        //recyclerView.removeAllViewsInLayout();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ReservationActivity.this));
         recyclerView.setAdapter(reservationAdapter);
     }
 
     @Override
-    public void confirmDialog(Gateway gateway, String token, int userId) {
+    public void confirmDialog(Gateway gateway, String token, int userId, List<Reservation> reservations) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete All?");
         builder.setMessage("Are you sure you want to delete all reservations?");
 
         builder.setPositiveButton("Yes", (dialog, which) -> {
             gateway.deleteCustomerReservations(token, userId);
-            Intent intent = new Intent(ReservationActivity.this, ReservationActivity.class);
-            startActivity(intent);
-            finish();
+
+            reservations.clear();
+            roomName.clear();
+            roomPrice.clear();
+            reservationDate.clear();
+
+            reservationAdapter.notifyDataSetChanged();
         });
 
         builder.setNegativeButton("No", (dialog, which) -> {
         });
 
         builder.create().show();
-    }
-
-    @Override
-    public void test(int position) {
-        recyclerView.removeViewAt(position);
     }
 }
