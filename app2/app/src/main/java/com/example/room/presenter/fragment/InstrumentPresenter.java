@@ -9,8 +9,8 @@ public class InstrumentPresenter {
     private final Gateway gateway;
     private final View instrumentFragment;
 
-    public InstrumentPresenter(View instrumentFragment) {
-        this.gateway = new Gateway();
+    public InstrumentPresenter(View instrumentFragment, Gateway gateway) {
+        this.gateway = gateway;
         this.instrumentFragment = instrumentFragment;
     }
 

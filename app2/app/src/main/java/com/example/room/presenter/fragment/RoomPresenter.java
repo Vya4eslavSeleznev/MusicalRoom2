@@ -9,8 +9,8 @@ public class RoomPresenter {
     private final Gateway gateway;
     private final View roomFragment;
 
-    public RoomPresenter(View roomFragment) {
-        this.gateway = new Gateway();
+    public RoomPresenter(View roomFragment, Gateway gateway) {
+        this.gateway = gateway;
         this.roomFragment = roomFragment;
     }
 

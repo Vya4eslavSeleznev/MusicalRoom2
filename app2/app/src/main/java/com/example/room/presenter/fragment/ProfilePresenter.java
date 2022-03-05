@@ -10,8 +10,8 @@ public class ProfilePresenter {
     private final Gateway gateway;
     private final View equipmentFragment;
 
-    public ProfilePresenter(View equipmentFragment) {
-        this.gateway = new Gateway();
+    public ProfilePresenter(View equipmentFragment, Gateway gateway) {
+        this.gateway = gateway;
         this.equipmentFragment = equipmentFragment;
     }
 

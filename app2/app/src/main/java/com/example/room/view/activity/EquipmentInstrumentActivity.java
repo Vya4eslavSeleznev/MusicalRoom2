@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.room.R;
 import com.example.room.adapter.EquipmentInstrumentAdapter;
 import com.example.room.model.Instrument;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.activity.EquipmentInstrumentPresenter;
 
@@ -40,7 +41,7 @@ public class EquipmentInstrumentActivity extends AppCompatActivity implements Eq
 
         repository = new Repository();
 
-        EquipmentInstrumentPresenter presenter = new EquipmentInstrumentPresenter(this);
+        EquipmentInstrumentPresenter presenter = new EquipmentInstrumentPresenter(this, new Gateway());
         presenter.setInstruments();
         presenter.setDataInRecycleView();
     }

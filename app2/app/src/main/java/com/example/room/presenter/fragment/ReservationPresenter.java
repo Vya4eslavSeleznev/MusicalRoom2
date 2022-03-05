@@ -13,8 +13,8 @@ public class ReservationPresenter {
     private final Gateway gateway;
     private final View reservationFragment;
 
-    public ReservationPresenter(View reservationFragment) {
-        this.gateway = new Gateway();
+    public ReservationPresenter(View reservationFragment, Gateway gateway) {
+        this.gateway = gateway;
         this.reservationFragment = reservationFragment;
     }
 

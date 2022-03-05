@@ -42,7 +42,7 @@ public class RoomActivity extends AppCompatActivity implements RoomPresenter.Vie
 
         repository = new Repository();
 
-        RoomPresenter presenter = new RoomPresenter(this);
+        RoomPresenter presenter = new RoomPresenter(this, new Gateway());
         presenter.setRooms();
         presenter.setDataInRecycleView();
     }

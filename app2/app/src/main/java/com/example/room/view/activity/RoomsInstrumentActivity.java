@@ -41,7 +41,7 @@ public class RoomsInstrumentActivity extends AppCompatActivity implements RoomsI
         instrumentName = new ArrayList<>();
 
         repository = new Repository();
-        RoomsInstrumentPresenter presenter = new RoomsInstrumentPresenter(this);
+        RoomsInstrumentPresenter presenter = new RoomsInstrumentPresenter(this, new Gateway());
 
         presenter.setRoomsInstrument();
         presenter.setDataInRecycleView();

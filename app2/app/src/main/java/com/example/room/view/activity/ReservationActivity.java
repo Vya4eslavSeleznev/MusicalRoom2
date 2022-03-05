@@ -49,7 +49,7 @@ public class ReservationActivity extends AppCompatActivity implements Reservatio
 
         repository = new Repository();
 
-        presenter = new ReservationPresenter(this);
+        presenter = new ReservationPresenter(this, new Gateway());
         presenter.setReservations();
         presenter.setRecycleView();
     }

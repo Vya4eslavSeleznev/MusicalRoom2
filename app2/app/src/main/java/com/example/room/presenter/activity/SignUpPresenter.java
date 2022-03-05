@@ -9,8 +9,8 @@ public class SignUpPresenter {
     private final Gateway gateway;
     private final View signUpActivity;
 
-    public SignUpPresenter(View signUpActivity) {
-        this.gateway = new Gateway();
+    public SignUpPresenter(View signUpActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.signUpActivity = signUpActivity;
     }
 

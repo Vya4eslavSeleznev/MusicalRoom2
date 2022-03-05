@@ -12,8 +12,8 @@ public class ConfirmationPresenter {
     private final Gateway gateway;
     private final View confirmationFragment;
 
-    public ConfirmationPresenter(View confirmationFragment) {
-        this.gateway = new Gateway();
+    public ConfirmationPresenter(View confirmationFragment, Gateway gateway) {
+        this.gateway = gateway;
         this.confirmationFragment = confirmationFragment;
     }
 

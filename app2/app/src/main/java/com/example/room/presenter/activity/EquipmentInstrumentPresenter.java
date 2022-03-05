@@ -12,8 +12,8 @@ public class EquipmentInstrumentPresenter {
     private final Gateway gateway;
     private final View equipmentInstrumentActivity;
 
-    public EquipmentInstrumentPresenter(View equipmentInstrumentActivity) {
-        this.gateway = new Gateway();
+    public EquipmentInstrumentPresenter(View equipmentInstrumentActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.equipmentInstrumentActivity = equipmentInstrumentActivity;
     }
 

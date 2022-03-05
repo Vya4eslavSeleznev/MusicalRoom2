@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.room.R;
 import com.example.room.model.Token;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.activity.AuthenticationPresenter;
 
@@ -33,7 +34,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         password = this.findViewById(R.id.authentication_editPassword);
         Button signInBtn = this.findViewById(R.id.sign_in_button);
         Button signUpBtn = this.findViewById(R.id.sign_up_button);
-        presenter = new AuthenticationPresenter(this);
+        presenter = new AuthenticationPresenter(this, new Gateway());
         repository = new Repository();
 
         signInBtn.setOnClickListener(v -> presenter.logInEventLogic());

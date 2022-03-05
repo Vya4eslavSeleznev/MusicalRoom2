@@ -12,8 +12,8 @@ public class RoomPresenter {
     private final Gateway gateway;
     private final View roomActivity;
 
-    public RoomPresenter(View roomActivity) {
-        this.gateway = new Gateway();
+    public RoomPresenter(View roomActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.roomActivity = roomActivity;
     }
 

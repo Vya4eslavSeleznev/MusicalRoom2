@@ -21,6 +21,7 @@ import com.example.room.R;
 import com.example.room.databinding.FragmentRoomsInstrumentBinding;
 import com.example.room.model.Instrument;
 import com.example.room.model.Room;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.RoomsInstrumentPresenter;
 import com.example.room.view.activity.RoomsInstrumentActivity;
@@ -56,7 +57,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
 
         repository = new Repository();
 
-        presenter = new RoomsInstrumentPresenter(this);
+        presenter = new RoomsInstrumentPresenter(this, new Gateway());
         presenter.parseData();
         presenter.setSpinners();
 
