@@ -87,19 +87,19 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
-app/.gitignore
-app/gradlew.bat
-app/gradlew
-app/.idea/.gitignore
-app/.idea/.name
-app/.idea/runConfigurations.xml
-app/.idea/misc.xml
-app/.idea/jarRepositories.xml
-app/.idea/gradle.xml
-app/app/.gitignore
-app/.idea/compiler.xml
-app/settings.gradle
-app/gradle.properties
-app/app/proguard-rules.pro
-app/gradle/wrapper/gradle-wrapper.jar
-app/gradle/wrapper/gradle-wrapper.properties
+app2/.gitignore
+app2/gradlew.bat
+app2/gradlew
+app2/.idea/.gitignore
+app2/.idea/.name
+app2/.idea/runConfigurations.xml
+app2/.idea/misc.xml
+app2/.idea/jarRepositories.xml
+app2/.idea/gradle.xml
+app2/app/.gitignore
+app2/.idea/compiler.xml
+app2/settings.gradle
+app2/gradle.properties
+app2/app/proguard-rules.pro
+app2/gradle/wrapper/gradle-wrapper.jar
+app2/gradle/wrapper/gradle-wrapper.properties

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/admin_navigation"
+    app:startDestination="@+id/navigation_customer">
+
+    <fragment
+        android:id="@+id/navigation_customer"
+        android:name="com.example.room.view.fragment.ConfirmationFragment"
+        android:label="@string/title_confirmation"
+        tools:layout="@layout/fragment_confirmation" />
+
+    <fragment
+        android:id="@+id/navigation_room"
+        android:name="com.example.room.view.fragment.RoomFragment"
+        android:label="@string/title_room"
+        tools:layout="@layout/fragment_room" />
+
+    <fragment
+        android:id="@+id/navigation_instrument"
+        android:name="com.example.room.view.fragment.InstrumentFragment"
+        android:label="@string/title_instrument"
+        tools:layout="@layout/fragment_instrument" />
+
+    <fragment
+        android:id="@+id/navigation_rooms_instrument"
+        android:name="com.example.room.view.fragment.RoomsInstrumentFragment"
+        android:label="@string/title_rooms_instrument"
+        tools:layout="@layout/fragment_rooms_instrument" />
+
+</navigation>

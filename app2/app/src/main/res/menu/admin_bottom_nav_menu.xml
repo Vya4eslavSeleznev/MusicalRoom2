@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_customer"
+        android:icon="@drawable/ic_customer_black_24dp"
+        android:title="@string/title_confirmation" />
+
+    <item
+        android:id="@+id/navigation_room"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_room" />
+    <item
+        android:id="@+id/navigation_instrument"
+        android:icon="@drawable/ic_equipment_black_24dp"
+        android:title="@string/title_instrument" />
+
+    <item
+        android:id="@+id/navigation_rooms_instrument"
+        android:icon="@drawable/ic_rooms_instrument_black_24dp"
+        android:title="@string/title_rooms_instrument" />
+
+</menu>

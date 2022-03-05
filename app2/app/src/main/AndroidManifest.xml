@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.room">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Room"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".view.activity.SignUpActivity"></activity>
+        <activity android:name=".view.activity.AdminRoomActivity" />
+        <activity android:name=".view.activity.AdminInstrumentActivity" />
+        <activity android:name=".view.activity.EquipmentInstrumentActivity" />
+        <activity android:name=".view.activity.UserActivity" />
+        <activity
+            android:name=".view.activity.AuthenticationActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.AdminActivity" />
+        <activity
+            android:name=".view.activity.ReservationActivity"
+            android:parentActivityName=".view.activity.UserActivity" />
+        <activity
+            android:name=".view.activity.RoomsInstrumentActivity"
+            android:label="@string/title_rooms_instrument"
+            android:parentActivityName=".view.activity.AdminActivity" />
+        <activity
+            android:name=".view.activity.RoomActivity"
+            android:label="@string/rooms"
+            android:parentActivityName=".view.activity.AdminActivity" />
+        <activity
+            android:name=".view.activity.InstrumentActivity"
+            android:label="@string/instruments"
+            android:parentActivityName=".view.activity.AdminActivity" />
+    </application>
+
+</manifest>

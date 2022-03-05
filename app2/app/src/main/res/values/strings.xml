@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Musical Room</string>
+    <string name="title_home">Home</string>
+    <string name="title_equipment">Equipment</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_reserve">Reserve</string>
+    <string name="home_button">Go to reserve</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="profile_button">Refresh</string>
+    <string name="date">Date</string>
+    <string name="instrument">Instrument</string>
+    <string name="instruments">Instruments</string>
+    <string name="room">Room</string>
+    <string name="rooms">Rooms</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_instrument">Select Instrument</string>
+    <string name="select_room">Select Room</string>
+    <string name="booked_rooms">My Reservations</string>
+    <string name="deleteAll">Delete All</string>
+    <string name="noData">No data</string>
+    <string name="title_confirmation">Confirmation</string>
+    <string name="title_room">Room</string>
+    <string name="title_instrument">Instrument</string>
+    <string name="title_rooms_instrument">Rooms Instrument</string>
+    <string name="add_customer">Add Customer</string>
+    <string name="view_customers">View Customers</string>
+    <string name="customers">Customers</string>
+    <string name="description">Description</string>
+    <string name="price">Price</string>
+    <string name="add_room">Add Room</string>
+    <string name="view_rooms">View Rooms</string>
+    <string name="add_instrument">Add Instrument</string>
+    <string name="view_instrument">View Instruments</string>
+    <string name="room_name">Room Name</string>
+    <string name="instrument_name">Instrument Name</string>
+    <string name="view_equipment">View Equipment</string>
+    <string name="add_equipment">Add Equipment</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="role">Role</string>
+    <string name="homeInfo">Welcome to the music studio! Our company has been operating since 1994. Such stars as Alla Pugacheva, Philip Kirkorov and many others worked with us. Order your music room as soon as possible!</string>
+    <string name="not_confirmed">Not confirmed</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="confirm">Confirm</string>
+
+    <string-array name="roles">
+        <item>User</item>
+        <item>Admin</item>
+    </string-array>
+</resources>
