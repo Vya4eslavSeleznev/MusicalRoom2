@@ -52,7 +52,7 @@ public class EquipmentPresenterTest {
 
         when(view.adapterEventLogic(position, rooms)).thenReturn(intentToReturn);
 
-        Intent intent = view.adapterEventLogic(position, rooms);
+        Intent intent = equipmentPresenter.adapterEventLogic(position);//view.adapterEventLogic(position, rooms);
 
         assertEquals(intentToReturn, intent);
     }
@@ -67,7 +67,7 @@ public class EquipmentPresenterTest {
 
         when(view.setRecycleView()).thenReturn(equipmentRoomAdapterToReturn);
 
-        EquipmentRoomAdapter equipmentRoomAdapter = view.setRecycleView();
+        EquipmentRoomAdapter equipmentRoomAdapter = equipmentPresenter.setRecycleView();//view.setRecycleView();
 
         assertEquals(equipmentRoomAdapterToReturn, equipmentRoomAdapter);
     }

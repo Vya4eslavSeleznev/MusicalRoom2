@@ -13,6 +13,7 @@ import com.example.room.model.Reservation;
 import com.example.room.model.Room;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Repository {
@@ -82,5 +83,11 @@ public class Repository {
             roomId = bundle.getInt("roomId");
 
         return roomId;
+    }
+
+    public boolean checkDate(Date selectedDate) {
+        Date currentDate = new Date();
+
+        return !selectedDate.before(currentDate);
     }
 }

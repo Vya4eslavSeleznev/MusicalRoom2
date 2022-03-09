@@ -61,9 +61,15 @@ public class AdminRoomPresenterTest {
 
         when(view.adapterEventLogic(position)).thenReturn(intentToReturn);
 
-        Intent intent = view.adapterEventLogic(position);
+        Intent intent = adminRoomPresenter.adapterEventLogic(position);
 
         assertEquals(intentToReturn, intent);
+    }
+
+    @Test
+    public void getToken() {
+        Gateway gatewayTest = adminRoomPresenter.getGateway();
+        assertEquals(gatewayTest, gateway);
     }
 
     private List<Room> getAllRooms() {

@@ -36,7 +36,7 @@ public class ProfilePresenterTest {
 
         when(gateway.getCustomer(token, userId)).thenReturn(customerToReturn);
 
-        Customer customer = gateway.getCustomer(token, userId);
+        Customer customer = profilePresenter.getCustomer(token, userId);
 
         assertEquals(customerToReturn, customer);
     }

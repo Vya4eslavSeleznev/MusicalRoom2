@@ -98,13 +98,13 @@ public class RoomsInstrumentPresenterTest {
         getToken();
         when(gateway.getAllInstruments(token)).thenReturn(instrumentsToReturn);
 
-        return gateway.getAllInstruments(token);
+        return profilePresenter.getInstruments();
     }
 
     private List<Room> getAllRooms() {
         getToken();
         when(gateway.getAllRooms(token)).thenReturn(roomsToReturn);
 
-        return gateway.getAllRooms(token);
+        return profilePresenter.getRooms();
     }
 }
