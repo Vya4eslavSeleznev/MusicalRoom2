@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.room.R;
 import com.example.room.databinding.FragmentInstrumentBinding;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.InstrumentPresenter;
 import com.example.room.view.activity.InstrumentActivity;
@@ -38,7 +39,7 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
         descriptionTextView = root.findViewById(R.id.instrument_description_edit);
 
         repository = new Repository();
-        presenter = new InstrumentPresenter(this);
+        presenter = new InstrumentPresenter(this, new Gateway());
 
         addInstrument.setOnClickListener(v -> presenter.addInstrumentEventLogic());
 

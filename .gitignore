@@ -103,3 +103,4 @@ app2/gradle.properties
 app2/app/proguard-rules.pro
 app2/gradle/wrapper/gradle-wrapper.jar
 app2/gradle/wrapper/gradle-wrapper.properties
+app2/.idea/deploymentTargetDropDown.xml

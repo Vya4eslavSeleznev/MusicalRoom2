@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.room.R;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.activity.SignUpPresenter;
 
 public class SignUpActivity extends AppCompatActivity implements SignUpPresenter.View {
@@ -31,7 +32,7 @@ public class SignUpActivity extends AppCompatActivity implements SignUpPresenter
         password = this.findViewById(R.id.sign_up_editPassword);
         Button signUpBtn = this.findViewById(R.id.sign_up_button);
 
-        presenter = new SignUpPresenter(this);
+        presenter = new SignUpPresenter(this, new Gateway());
 
         signUpBtn.setOnClickListener(v -> presenter.addUser());
     }

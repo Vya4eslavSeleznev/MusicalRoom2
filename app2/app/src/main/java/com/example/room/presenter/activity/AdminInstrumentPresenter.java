@@ -12,8 +12,8 @@ public class AdminInstrumentPresenter {
     private final Gateway gateway;
     private final View instrumentActivity;
 
-    public AdminInstrumentPresenter(View instrumentActivity) {
-        this.gateway = new Gateway();
+    public AdminInstrumentPresenter(View instrumentActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.instrumentActivity = instrumentActivity;
     }
 

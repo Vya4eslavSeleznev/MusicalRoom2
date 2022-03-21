@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.room.R;
 import com.example.room.databinding.FragmentProfileBinding;
 import com.example.room.model.Customer;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.ProfilePresenter;
 import com.example.room.view.activity.ReservationActivity;
@@ -41,7 +42,7 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
 
         repository = new Repository();
 
-        presenter = new ProfilePresenter(this);
+        presenter = new ProfilePresenter(this, new Gateway());
         presenter.setCustomer();
 
         myRoomsButton.setOnClickListener(v -> {

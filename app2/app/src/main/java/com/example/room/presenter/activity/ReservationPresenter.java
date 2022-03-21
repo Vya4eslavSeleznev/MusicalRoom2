@@ -13,8 +13,8 @@ public class ReservationPresenter {
     private final Gateway gateway;
     private final View reservationActivity;
 
-    public ReservationPresenter(View instrumentActivity) {
-        this.gateway = new Gateway();
+    public ReservationPresenter(View instrumentActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.reservationActivity = instrumentActivity;
     }
 

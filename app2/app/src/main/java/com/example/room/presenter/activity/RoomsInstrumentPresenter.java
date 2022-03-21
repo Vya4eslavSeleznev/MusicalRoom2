@@ -12,8 +12,8 @@ public class RoomsInstrumentPresenter {
     private final Gateway gateway;
     private final View roomsInstrumentActivity;
 
-    public RoomsInstrumentPresenter(View roomsInstrumentActivity) {
-        this.gateway = new Gateway();
+    public RoomsInstrumentPresenter(View roomsInstrumentActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.roomsInstrumentActivity = roomsInstrumentActivity;
     }
 

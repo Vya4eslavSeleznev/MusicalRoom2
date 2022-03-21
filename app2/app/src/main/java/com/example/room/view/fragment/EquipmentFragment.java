@@ -18,6 +18,7 @@ import com.example.room.R;
 import com.example.room.adapter.EquipmentRoomAdapter;
 import com.example.room.databinding.FragmentEquipmentBinding;
 import com.example.room.model.Room;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.EquipmentPresenter;
 import com.example.room.view.activity.EquipmentInstrumentActivity;
@@ -50,7 +51,7 @@ public class EquipmentFragment extends Fragment implements EquipmentPresenter.Vi
 
         repository = new Repository();
 
-        presenter = new EquipmentPresenter(this);
+        presenter = new EquipmentPresenter(this, new Gateway());
         presenter.setRooms();
         EquipmentRoomAdapter roomAdapter = presenter.setRecycleView();
 

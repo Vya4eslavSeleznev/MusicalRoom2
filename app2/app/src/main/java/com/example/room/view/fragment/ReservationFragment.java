@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.room.R;
 import com.example.room.databinding.FragmentReserveBinding;
 import com.example.room.model.Room;
+import com.example.room.model.gateways.Gateway;
 import com.example.room.presenter.Repository;
 import com.example.room.presenter.fragment.ReservationPresenter;
 
@@ -55,7 +56,7 @@ public class ReservationFragment extends Fragment implements ReservationPresente
 
         repository = new Repository();
 
-        presenter = new ReservationPresenter(this);
+        presenter = new ReservationPresenter(this, new Gateway());
         presenter.parseRoomData();
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<> (getActivity(),

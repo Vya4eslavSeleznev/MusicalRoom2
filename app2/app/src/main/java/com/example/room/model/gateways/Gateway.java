@@ -35,7 +35,7 @@ public class Gateway {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.15.101:8080")
+                .baseUrl("http://192.168.15.4:8080")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

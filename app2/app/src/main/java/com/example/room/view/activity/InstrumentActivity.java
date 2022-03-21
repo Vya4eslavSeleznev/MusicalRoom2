@@ -41,7 +41,7 @@ public class InstrumentActivity extends AppCompatActivity implements InstrumentP
 
         repository = new Repository();
 
-        InstrumentPresenter presenter = new InstrumentPresenter(this);
+        InstrumentPresenter presenter = new InstrumentPresenter(this, new Gateway());
         presenter.setInstruments();
         presenter.setDataInRecycleView();
     }

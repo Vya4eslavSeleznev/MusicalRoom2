@@ -47,7 +47,7 @@ public class ConfirmationFragment extends Fragment implements ConfirmationPresen
         reservationDate = new ArrayList<>();
         reservationConfirmed = new ArrayList<>();
 
-        ConfirmationPresenter presenter = new ConfirmationPresenter(this);
+        ConfirmationPresenter presenter = new ConfirmationPresenter(this, new Gateway());
         repository = new Repository();
 
         presenter.setReservations();

@@ -13,8 +13,8 @@ public class AdminRoomPresenter {
     private final Gateway gateway;
     private final View roomActivity;
 
-    public AdminRoomPresenter(View roomActivity) {
-        this.gateway = new Gateway();
+    public AdminRoomPresenter(View roomActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.roomActivity = roomActivity;
     }
 

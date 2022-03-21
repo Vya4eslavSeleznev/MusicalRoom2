@@ -10,8 +10,8 @@ public class AuthenticationPresenter {
     private final Gateway gateway;
     private final View authenticationActivity;
 
-    public AuthenticationPresenter(View authenticationActivity) {
-        this.gateway = new Gateway();
+    public AuthenticationPresenter(View authenticationActivity, Gateway gateway) {
+        this.gateway = gateway;
         this.authenticationActivity = authenticationActivity;
     }
 

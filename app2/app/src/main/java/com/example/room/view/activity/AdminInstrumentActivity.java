@@ -41,7 +41,7 @@ public class AdminInstrumentActivity extends AppCompatActivity implements AdminI
 
         repository = new Repository();
 
-        AdminInstrumentPresenter presenter = new AdminInstrumentPresenter(this);
+        AdminInstrumentPresenter presenter = new AdminInstrumentPresenter(this, new Gateway());
         presenter.setInstruments();
         presenter.setDataInRecycleView();
     }

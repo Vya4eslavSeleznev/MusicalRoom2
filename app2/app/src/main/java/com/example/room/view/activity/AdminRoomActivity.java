@@ -45,7 +45,7 @@ public class AdminRoomActivity extends AppCompatActivity implements AdminRoomPre
 
         repository = new Repository();
 
-        presenter = new AdminRoomPresenter(this);
+        presenter = new AdminRoomPresenter(this, new Gateway());
         presenter.setRooms();
         presenter.setDataInRecycleView();
 
