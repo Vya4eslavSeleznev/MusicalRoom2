@@ -174,7 +174,7 @@ public class RepositoryTest {
     }
 
     @Test
-    public void checkDate_selectedDateEqualsCurrent_true() throws ParseException {
+    public void checkDate_selectedDateEqualsCurrent_true() {
         java.util.Date selectedDate = new java.util.Date();
 
         boolean value = repository.checkDate(selectedDate);
@@ -182,7 +182,7 @@ public class RepositoryTest {
         assertTrue(value);
     }
 
-    private java.util.Date convertToDate(String receivedDate) throws ParseException{
+    private java.util.Date convertToDate(String receivedDate) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         return formatter.parse(receivedDate);
