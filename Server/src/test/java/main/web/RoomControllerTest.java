@@ -1,11 +1,8 @@
 package main.web;
 
-import main.entity.Customer;
 import main.entity.Instrument;
 import main.entity.Room;
 import main.entity.RoomInstrument;
-import main.exception.EntityNotFoundException;
-import main.repository.CustomerRepository;
 import main.repository.RoomInstrumentRepository;
 import main.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,9 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -74,12 +69,8 @@ class RoomControllerTest {
       .andExpect(jsonPath("[0].description").value(this.room.getDescription()));
   }
 
-
-
-
-  //TODO: JSON
   @Test
-  public void getAllRoomsInstruments() throws Exception {
+  public void getAllRoomsInstruments_statusOk() throws Exception {
     when(this.roomInstrumentRepository.findAll()).thenReturn(this.roomInstruments);
 
     RequestBuilder request = MockMvcRequestBuilders.get("/rooms/instruments");
@@ -87,14 +78,12 @@ class RoomControllerTest {
     this.mvc.perform(request)
       .andExpect(status().isOk())
       .andExpect(jsonPath("[0].id").value(this.roomInstruments.get(0).getId()))
-      .andExpect(jsonPath("[0].room").value(this.room))
-      .andExpect(jsonPath("[0].instrument").value(this.instrument));
+      .andExpect(jsonPath("[0].room.name").value(this.room.getName()))
+      .andExpect(jsonPath("[0].room.description").value(this.room.getDescription()))
+      .andExpect(jsonPath("[0].room.price").value(this.room.getPrice()))
+      .andExpect(jsonPath("[0].instrument.name").value(this.instrument.getName()))
+      .andExpect(jsonPath("[0].instrument.description").value(this.instrument.getDescription()));
   }
-
-
-
-
-
 
   @Test
   public void getInstrumentsByRoomId_statusOk() throws Exception {

@@ -1,14 +1,12 @@
 package main.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import main.entity.*;
+import main.entity.Customer;
+import main.entity.Reservation;
+import main.entity.Room;
+import main.entity.User;
 import main.exception.EntityNotFoundException;
-import main.model.ReservationModel;
-import main.repository.CustomerRepository;
 import main.repository.ReservationRepository;
-import main.repository.RoomRepository;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +54,8 @@ class ReservationControllerTest {
   public void setUp() throws Exception {
     this.room = new Room("TestName", "TestDescription", 123L);
     this.customer = new Customer("TestName", "444", new User("TestUserName", "Password", "USER"));
-    this.reservation = new Reservation(new java.sql.Date(convertToDate().getTime()), room, customer);
+    Convert convert = new Convert();
+    this.reservation = new Reservation(new java.sql.Date(convert.convertToDate("25-08-2022").getTime()), room, customer);
     this.reservations = new ArrayList<>();
 
     this.room.setId(4L);
@@ -145,10 +141,6 @@ class ReservationControllerTest {
       .andExpect(status().isNotFound());
   }
 
-
-
-
-  //TODO: JSON
   @Test
   public void getReservations_statusOk() throws Exception {
     List<Reservation> reservations = new ArrayList<>();
@@ -156,21 +148,21 @@ class ReservationControllerTest {
 
     when(this.reservationRepository.findAll()).thenReturn(reservations);
 
-    String jsonRoom = this.objectMapper.writeValueAsString(this.room);
-    String jsonCustomer = this.objectMapper.writeValueAsString(this.customer);
+    //String jsonRoom = this.objectMapper.writeValueAsString(this.room);
+    //String jsonCustomer = this.objectMapper.writeValueAsString(this.customer);
 
     RequestBuilder request = MockMvcRequestBuilders.get("/reservations/all");
     this.mvc.perform(request)
       .andExpect(status().isOk())
       .andExpect(jsonPath("[0].id").value(this.reservation.getId()))
       .andExpect(jsonPath("[0].date").value(this.reservation.getDate().toString()))
-      .andExpect(jsonPath("[0].room").value(jsonRoom))
-      .andExpect(jsonPath("[0].customer").value(jsonCustomer));
+      .andExpect(jsonPath("[0].room.name").value(this.reservation.getRoom().getName()))
+      .andExpect(jsonPath("[0].room.description").value(this.reservation.getRoom().getDescription()))
+      .andExpect(jsonPath("[0].room.price").value(this.reservation.getRoom().getPrice()))
+      .andExpect(jsonPath("[0].customer.name").value(this.reservation.getCustomer().getName()))
+      .andExpect(jsonPath("[0].customer.phone").value(this.reservation.getCustomer().getPhone()))
+      .andExpect(jsonPath("[0].customer.userId").value(this.reservation.getCustomer().getUserId()));
   }
-
-
-
-
 
   /*@Test
   public void deleteCustomerReservations() throws Exception {
@@ -184,13 +176,4 @@ class ReservationControllerTest {
       .andExpect(status().isOk());
   }
 */
-
-
-
-  private java.util.Date convertToDate() throws ParseException {
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-
-    String dateToParse = "25-08-2022";
-    return formatter.parse(dateToParse);
-  }
 }

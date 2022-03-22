@@ -21,8 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,9 +96,6 @@ class DataControllerTest {
   @Test
   @WithMockUser(username = "admin", password = "password", roles = "ADMIN")
   public void addRoomInstrument_statusOk() throws Exception {
-    //this.room.setId(2L);
-    //this.instrument.setId(3L);
-
     RoomInstrumentModel roomInstrumentModel = new RoomInstrumentModel();
     roomInstrumentModel.setRoomId(this.room.getId());
     roomInstrumentModel.setInstrumentId(this.instrument.getId());
@@ -137,8 +132,9 @@ class DataControllerTest {
   public void deleteRoom_statusOk() throws Exception {
     List<Reservation> reservations = new ArrayList<>();
     List<RoomInstrument> roomInstruments = new ArrayList<>();
+    Convert convert = new Convert();
 
-    reservations.add(new Reservation(new java.sql.Date(convertToDate().getTime()), room,
+    reservations.add(new Reservation(new java.sql.Date(convert.convertToDate("25-08-2022").getTime()), room,
       new Customer("name", "1234", new User("userName", "password", "USER"))));
 
     roomInstruments.add(new RoomInstrument(this.room, this.instrument));
@@ -171,13 +167,10 @@ class DataControllerTest {
       .andExpect(jsonPath("[0].description").value(this.instrument.getDescription()));
   }
 
-
-
-
-  private java.util.Date convertToDate() throws ParseException {
+  /*private java.util.Date convertToDate() throws ParseException {
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     String dateToParse = "25-08-2022";
     return formatter.parse(dateToParse);
-  }
+  }*/
 }
