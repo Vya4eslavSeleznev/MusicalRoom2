@@ -1,13 +1,12 @@
 package main.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.entity.Instrument;
-import main.entity.Room;
-import main.entity.RoomInstrument;
+import main.entity.*;
 import main.model.InstrumentModel;
 import main.model.RoomInstrumentModel;
 import main.model.RoomModel;
 import main.repository.InstrumentRepository;
+import main.repository.ReservationRepository;
 import main.repository.RoomInstrumentRepository;
 import main.repository.RoomRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,9 @@ class DataControllerTest {
   private RoomRepository roomRepository;
 
   @MockBean
+  private ReservationRepository reservationRepository;
+
+  @MockBean
   private RoomInstrumentRepository roomInstrumentRepository;
 
   @Autowired
@@ -55,6 +59,9 @@ class DataControllerTest {
   public void setUp() {
     this.room = new Room("TestRoomName", "TestDescription", 4L);
     this.instrument = new Instrument("TestName", "TestDescription");
+
+    room.setId(2L);
+    instrument.setId(3L);
   }
 
   @Test
@@ -91,8 +98,8 @@ class DataControllerTest {
   @Test
   @WithMockUser(username = "admin", password = "password", roles = "ADMIN")
   public void addRoomInstrument_statusOk() throws Exception {
-    this.room.setId(2L);
-    this.instrument.setId(3L);
+    //this.room.setId(2L);
+    //this.instrument.setId(3L);
 
     RoomInstrumentModel roomInstrumentModel = new RoomInstrumentModel();
     roomInstrumentModel.setRoomId(this.room.getId());
@@ -127,6 +134,26 @@ class DataControllerTest {
   }
 
   @Test
+  public void deleteRoom_statusOk() throws Exception {
+    List<Reservation> reservations = new ArrayList<>();
+    List<RoomInstrument> roomInstruments = new ArrayList<>();
+
+    reservations.add(new Reservation(new java.sql.Date(convertToDate().getTime()), room,
+      new Customer("name", "1234", new User("userName", "password", "USER"))));
+
+    roomInstruments.add(new RoomInstrument(this.room, this.instrument));
+
+    when(roomRepository.findById(this.room.getId())).thenReturn(java.util.Optional.ofNullable(this.room));
+    when(roomInstrumentRepository.findAll()).thenReturn(roomInstruments);
+    when(reservationRepository.findAll()).thenReturn(reservations);
+
+    RequestBuilder request = MockMvcRequestBuilders.delete("/data/room/{id}", String.valueOf(this.room.getId()));
+
+    this.mvc.perform(request)
+      .andExpect(status().isOk());
+  }
+
+  @Test
   public void getAllInstrument_statusOk() throws Exception {
     final long instrumentId = 4L;
 
@@ -142,5 +169,15 @@ class DataControllerTest {
       .andExpect(jsonPath("[0].id").value(instrumentId))
       .andExpect(jsonPath("[0].name").value(this.instrument.getName()))
       .andExpect(jsonPath("[0].description").value(this.instrument.getDescription()));
+  }
+
+
+
+
+  private java.util.Date convertToDate() throws ParseException {
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+
+    String dateToParse = "25-08-2022";
+    return formatter.parse(dateToParse);
   }
 }

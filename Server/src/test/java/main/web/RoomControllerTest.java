@@ -42,13 +42,22 @@ class RoomControllerTest {
 
   private Room room;
   private List<Room> rooms;
+  private List<RoomInstrument> roomInstruments;
+  private Instrument instrument;
 
   @BeforeEach
   public void setUp() {
     this.room = new Room("name", "description", 123L);
-    this.room.setId(4L);
+    this.instrument = new Instrument("name", "description");
+
+    this.room.setId(3L);
+    this.instrument.setId(4L);
 
     this.rooms = new ArrayList<>();
+    this.roomInstruments = new ArrayList<>();
+
+    this.roomInstruments.add(new RoomInstrument(this.room, this.instrument));
+    this.roomInstruments.get(0).setId(3L);
   }
 
   @Test
@@ -65,25 +74,39 @@ class RoomControllerTest {
       .andExpect(jsonPath("[0].description").value(this.room.getDescription()));
   }
 
+
+
+
+  //TODO: JSON
   @Test
-  public void getInstrumentsByRoomId_statusOk() throws Exception {
-    List<RoomInstrument> roomInstruments = new ArrayList<>();
-    Instrument instrument = new Instrument("name", "description");
+  public void getAllRoomsInstruments() throws Exception {
+    when(this.roomInstrumentRepository.findAll()).thenReturn(this.roomInstruments);
 
-    this.room.setId(3L);
-    instrument.setId(4L);
-
-    roomInstruments.add(new RoomInstrument(this.room, instrument));
-
-    when(this.roomInstrumentRepository.findAll()).thenReturn(roomInstruments);
-
-    RequestBuilder request = MockMvcRequestBuilders.get("/rooms/{id}/instruments",
-      String.valueOf(roomInstruments.get(0).getRoom().getId()));
+    RequestBuilder request = MockMvcRequestBuilders.get("/rooms/instruments");
 
     this.mvc.perform(request)
       .andExpect(status().isOk())
-      .andExpect(jsonPath("[0].id").value(roomInstruments.get(0).getInstrument().getId()))
-      .andExpect(jsonPath("[0].name").value(roomInstruments.get(0).getInstrument().getName()))
-      .andExpect(jsonPath("[0].description").value(roomInstruments.get(0).getInstrument().getDescription()));
+      .andExpect(jsonPath("[0].id").value(this.roomInstruments.get(0).getId()))
+      .andExpect(jsonPath("[0].room").value(this.room))
+      .andExpect(jsonPath("[0].instrument").value(this.instrument));
+  }
+
+
+
+
+
+
+  @Test
+  public void getInstrumentsByRoomId_statusOk() throws Exception {
+    when(this.roomInstrumentRepository.findAll()).thenReturn(this.roomInstruments);
+
+    RequestBuilder request = MockMvcRequestBuilders.get("/rooms/{id}/instruments",
+      String.valueOf(this.roomInstruments.get(0).getRoom().getId()));
+
+    this.mvc.perform(request)
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("[0].id").value(this.roomInstruments.get(0).getInstrument().getId()))
+      .andExpect(jsonPath("[0].name").value(this.roomInstruments.get(0).getInstrument().getName()))
+      .andExpect(jsonPath("[0].description").value(this.roomInstruments.get(0).getInstrument().getDescription()));
   }
 }

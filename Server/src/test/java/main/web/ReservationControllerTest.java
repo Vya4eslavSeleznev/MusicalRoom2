@@ -44,8 +44,8 @@ class ReservationControllerTest {
   private CustomerRepository customerRepository;
 
   @MockBean
-  private RoomRepository roomRepository;
-*/
+  private RoomRepository roomRepository;*/
+
   @Autowired
   ObjectMapper objectMapper;
 
@@ -53,12 +53,14 @@ class ReservationControllerTest {
   private Customer customer;
   private final long reservationId = 4L;
   private Reservation reservation;
+  private List<Reservation> reservations;
 
   @BeforeEach
   public void setUp() throws Exception {
     this.room = new Room("TestName", "TestDescription", 123L);
     this.customer = new Customer("TestName", "444", new User("TestUserName", "Password", "USER"));
-    this.reservation = new Reservation(new java.sql.Date(convertToDate().getTime()), room, customer);;
+    this.reservation = new Reservation(new java.sql.Date(convertToDate().getTime()), room, customer);
+    this.reservations = new ArrayList<>();
 
     this.room.setId(4L);
     this.customer.setId(5L);
@@ -66,6 +68,7 @@ class ReservationControllerTest {
     this.customer.setUserId(6L);
     this.reservation.setId(6L);
     this.reservation.setConfirmed(false);
+    this.reservations.add(this.reservation);
   }
 
 
@@ -142,6 +145,10 @@ class ReservationControllerTest {
       .andExpect(status().isNotFound());
   }
 
+
+
+
+  //TODO: JSON
   @Test
   public void getReservations_statusOk() throws Exception {
     List<Reservation> reservations = new ArrayList<>();
@@ -160,6 +167,25 @@ class ReservationControllerTest {
       .andExpect(jsonPath("[0].room").value(jsonRoom))
       .andExpect(jsonPath("[0].customer").value(jsonCustomer));
   }
+
+
+
+
+
+  /*@Test
+  public void deleteCustomerReservations() throws Exception {
+    final long customerId = 8L;
+
+    when(reservationRepository.findAll()).thenReturn(this.reservations);
+
+    RequestBuilder request = MockMvcRequestBuilders.delete("/customer/{id}", customerId);
+
+    this.mvc.perform(request)
+      .andExpect(status().isOk());
+  }
+*/
+
+
 
   private java.util.Date convertToDate() throws ParseException {
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
