@@ -1,9 +1,14 @@
 package main.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import main.entity.*;
+import main.exception.EntityNotFoundException;
+import main.model.ReservationModel;
+import main.repository.CustomerRepository;
 import main.repository.ReservationRepository;
-import org.junit.Before;
+import main.repository.RoomRepository;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -34,13 +40,18 @@ class ReservationControllerTest {
   @MockBean
   private ReservationRepository reservationRepository;
 
+  /*@MockBean
+  private CustomerRepository customerRepository;
+
+  @MockBean
+  private RoomRepository roomRepository;
+*/
   @Autowired
   ObjectMapper objectMapper;
 
   private Room room;
   private Customer customer;
   private final long reservationId = 4L;
-  private final long fakeReservationId = 7L;
   private Reservation reservation;
 
   @BeforeEach
@@ -48,96 +59,106 @@ class ReservationControllerTest {
     this.room = new Room("TestName", "TestDescription", 123L);
     this.customer = new Customer("TestName", "444", new User("TestUserName", "Password", "USER"));
     this.reservation = new Reservation(new java.sql.Date(convertToDate().getTime()), room, customer);;
+
+    this.room.setId(4L);
+    this.customer.setId(5L);
+    this.customer.getUser().setId(6L);
+    this.customer.setUserId(6L);
+    this.reservation.setId(6L);
+    this.reservation.setConfirmed(false);
   }
 
-  @Test
-  public void changeConfirmationStatus_realReservationId_statusOk() throws Exception {
-    reservation.setId(reservationId);
-    reservation.setConfirmed(false);
 
-    when(reservationRepository.findById(reservationId)).thenReturn(java.util.Optional.of(reservation));
+  /*@Test
+  public void addReservation() throws Exception {
+    ReservationModel reservationModel = new ReservationModel();
+    reservationModel.setDate("25-08-2022");
+    reservationModel.setRoomId(room.getId());
+    reservationModel.setCustomerId(customer.getId());
+    reservationModel.setConfirmed(false);
 
-    boolean currentStatus = reservation.isConfirmed();
-    reservation.setConfirmed(!currentStatus);
+    when(customerRepository.findById(reservation.getCustomer().getId())).thenReturn(
+      java.util.Optional.ofNullable(customer));
 
-    RequestBuilder request = MockMvcRequestBuilders.put("/reservations/{id}", String.valueOf(reservationId))
+    when(roomRepository.findById(reservation.getRoom().getId())).thenReturn(java.util.Optional.ofNullable(room));
+
+    RequestBuilder request = MockMvcRequestBuilders.post("/reservations/add")
       .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsString(reservation));
+      .content(objectMapper.writeValueAsString(reservationModel));
 
     this.mvc.perform(request)
       .andExpect(status().isOk());
-  }
-
-  /*@Test
-  public void changeConfirmationStatus_fakeReservationId_reservationNotFound() throws Exception {
-    final long reservationId = 4L;
-    final long fakeReservationId = 7L;
-
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-    java.util.Date date = formatter.parse("25-08-2022");
-    java.sql.Date dateInMs = new java.sql.Date(date.getTime());
-
-    Room room = new Room("TestName", "TestDescription", 123L);
-    Customer customer = new Customer("TestName", "444", new User("TestUserName", "Password", "USER"));
-    Reservation reservation = new Reservation(dateInMs, room, customer);
-    reservation.setId(reservationId);
-    reservation.setConfirmed(false);
-
-    when(reservationRepository.findById(reservationId)).thenReturn(java.util.Optional.of(reservation));
-
-    boolean currentStatus = reservation.isConfirmed();
-    reservation.setConfirmed(!currentStatus);
-
-    RequestBuilder request = MockMvcRequestBuilders.put("/reservations/{id}", String.valueOf(fakeReservationId));
-
-    this.mvc.perform(request)
-      .andExpect(status().isNotFound());
   }*/
 
 
+
+
   @Test
-  public void deleteReservation_realReservationId_statusOk() throws Exception {
-    reservation.setId(reservationId);
+  public void changeConfirmationStatus_realReservationId_statusOk() throws Exception {
+    when(this.reservationRepository.findById(this.reservation.getId())).thenReturn(java.util.Optional.of(this.reservation));
 
-    when(reservationRepository.findById(reservationId)).thenReturn(java.util.Optional.of(reservation));
+    boolean currentStatus = this.reservation.isConfirmed();
+    this.reservation.setConfirmed(!currentStatus);
 
-    RequestBuilder request = MockMvcRequestBuilders.delete("/reservations/{id}", String.valueOf(reservationId));
+    RequestBuilder request = MockMvcRequestBuilders.put("/reservations/{id}", String.valueOf(this.reservation.getId()))
+      .contentType(MediaType.APPLICATION_JSON)
+      .content(this.objectMapper.writeValueAsString(this.reservation));
 
     this.mvc.perform(request)
       .andExpect(status().isOk());
   }
 
+  @Test
+  public void changeConfirmationStatus_fakeReservationId_reservationNotFound() throws Exception {
+    when(this.reservationRepository.findById(this.reservation.getId())).thenThrow(new EntityNotFoundException());
 
+    boolean currentStatus = this.reservation.isConfirmed();
+    this.reservation.setConfirmed(!currentStatus);
+
+    RequestBuilder request = MockMvcRequestBuilders.put("/reservations/{id}", String.valueOf(this.reservation.getId()));
+
+    this.mvc.perform(request)
+      .andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void deleteReservation_realReservationId_statusOk() throws Exception {
+    when(this.reservationRepository.findById(this.reservation.getId())).thenReturn(java.util.Optional.of(this.reservation));
+
+    RequestBuilder request = MockMvcRequestBuilders.delete("/reservations/{id}", String.valueOf(this.reservation.getId()));
+
+    this.mvc.perform(request)
+      .andExpect(status().isOk());
+  }
 
   @Test
   public void deleteReservation_fakeReservationId_reservationNotFound() throws Exception {
-    reservation.setId(reservationId);
+    when(this.reservationRepository.findById(this.reservation.getId())).thenReturn(java.util.Optional.of(this.reservation));
 
-    when(reservationRepository.findById(reservationId)).thenReturn(java.util.Optional.of(reservation));
-
+    long fakeReservationId = 7L;
     RequestBuilder request = MockMvcRequestBuilders.delete("/reservations/{id}", String.valueOf(fakeReservationId));
 
     this.mvc.perform(request)
       .andExpect(status().isNotFound());
   }
 
-
-
   @Test
   public void getReservations_statusOk() throws Exception {
     List<Reservation> reservations = new ArrayList<>();
-    reservations.add(reservation);
-    reservations.get(0).setId(reservationId);
+    reservations.add(this.reservation);
 
-    when(reservationRepository.findAll()).thenReturn(reservations);
+    when(this.reservationRepository.findAll()).thenReturn(reservations);
+
+    String jsonRoom = this.objectMapper.writeValueAsString(this.room);
+    String jsonCustomer = this.objectMapper.writeValueAsString(this.customer);
 
     RequestBuilder request = MockMvcRequestBuilders.get("/reservations/all");
     this.mvc.perform(request)
       .andExpect(status().isOk())
-      .andExpect(jsonPath("[0].id").value(reservationId))
-      //.andExpect(jsonPath("[0].date").value(reservation.getDate()))
-      .andExpect(jsonPath("[0].room.name").value(room.getName()))
-      .andExpect(jsonPath("[0].customer.name").value(customer.getName()));
+      .andExpect(jsonPath("[0].id").value(this.reservation.getId()))
+      .andExpect(jsonPath("[0].date").value(this.reservation.getDate().toString()))
+      .andExpect(jsonPath("[0].room").value(jsonRoom))
+      .andExpect(jsonPath("[0].customer").value(jsonCustomer));
   }
 
   private java.util.Date convertToDate() throws ParseException {

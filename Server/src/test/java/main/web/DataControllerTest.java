@@ -10,7 +10,6 @@ import main.model.RoomModel;
 import main.repository.InstrumentRepository;
 import main.repository.RoomInstrumentRepository;
 import main.repository.RoomRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ class DataControllerTest {
 
     RequestBuilder request = MockMvcRequestBuilders.post("/data/instrument")
       .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsString(instrumentModel));
+      .content(this.objectMapper.writeValueAsString(instrumentModel));
 
     this.mvc.perform(request)
       .andExpect(status().isOk());
@@ -83,7 +82,7 @@ class DataControllerTest {
 
     RequestBuilder request = MockMvcRequestBuilders.post("/data/room")
       .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsString(roomModel));
+      .content(this.objectMapper.writeValueAsString(roomModel));
 
     this.mvc.perform(request)
       .andExpect(status().isOk());
@@ -92,19 +91,19 @@ class DataControllerTest {
   @Test
   @WithMockUser(username = "admin", password = "password", roles = "ADMIN")
   public void addRoomInstrument_statusOk() throws Exception {
-    room.setId(2L);
-    instrument.setId(3L);
+    this.room.setId(2L);
+    this.instrument.setId(3L);
 
     RoomInstrumentModel roomInstrumentModel = new RoomInstrumentModel();
-    roomInstrumentModel.setRoomId(room.getId());
-    roomInstrumentModel.setInstrumentId(instrument.getId());
+    roomInstrumentModel.setRoomId(this.room.getId());
+    roomInstrumentModel.setInstrumentId(this.instrument.getId());
 
-    when(roomRepository.findById(room.getId())).thenReturn(java.util.Optional.of(room));
-    when(instrumentRepository.findById(instrument.getId())).thenReturn(java.util.Optional.of(instrument));
+    when(this.roomRepository.findById(this.room.getId())).thenReturn(java.util.Optional.of(this.room));
+    when(this.instrumentRepository.findById(this.instrument.getId())).thenReturn(java.util.Optional.of(this.instrument));
 
     RequestBuilder request = MockMvcRequestBuilders.post("/data/room_instrument")
       .contentType(MediaType.APPLICATION_JSON)
-      .content(objectMapper.writeValueAsString(roomInstrumentModel));
+      .content(this.objectMapper.writeValueAsString(roomInstrumentModel));
 
     this.mvc.perform(request)
       .andExpect(status().isOk());
@@ -116,10 +115,10 @@ class DataControllerTest {
     RoomInstrument roomInstrument = new RoomInstrument();
     roomInstrument.setId(roomInstrumentId);
 
-    roomInstrument.setRoom(room);
-    roomInstrument.setInstrument(instrument);
+    roomInstrument.setRoom(this.room);
+    roomInstrument.setInstrument(this.instrument);
 
-    when(roomInstrumentRepository.findById(roomInstrumentId)).thenReturn(java.util.Optional.of(roomInstrument));
+    when(this.roomInstrumentRepository.findById(roomInstrumentId)).thenReturn(java.util.Optional.of(roomInstrument));
 
     RequestBuilder request = MockMvcRequestBuilders.delete("/data/room_instrument/{id}", String.valueOf(roomInstrumentId));
 
@@ -132,16 +131,16 @@ class DataControllerTest {
     final long instrumentId = 4L;
 
     List<Instrument> instruments = new ArrayList<>();
-    instruments.add(instrument);
+    instruments.add(this.instrument);
     instruments.get(0).setId(instrumentId);
 
-    when(instrumentRepository.findAll()).thenReturn(instruments);
+    when(this.instrumentRepository.findAll()).thenReturn(instruments);
 
     RequestBuilder request = MockMvcRequestBuilders.get("/data/all");
     this.mvc.perform(request)
       .andExpect(status().isOk())
       .andExpect(jsonPath("[0].id").value(instrumentId))
-      .andExpect(jsonPath("[0].name").value(instrument.getName()))
-      .andExpect(jsonPath("[0].description").value(instrument.getDescription()));
+      .andExpect(jsonPath("[0].name").value(this.instrument.getName()))
+      .andExpect(jsonPath("[0].description").value(this.instrument.getDescription()));
   }
 }
