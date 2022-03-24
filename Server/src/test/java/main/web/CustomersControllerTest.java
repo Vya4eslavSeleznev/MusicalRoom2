@@ -117,9 +117,4 @@ class CustomersControllerTest {
       .andExpect(jsonPath("[0].name").value(this.customer.getName()))
       .andExpect(jsonPath("[0].phone").value(this.customer.getPhone()));
   }
-
-  @Test
-  public void a() {
-    
-  }
 }
