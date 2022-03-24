@@ -210,3 +210,16 @@ Server/target/classes/application.properties
 Server/target/classes/META-INF/spring-configuration-metadata.json
 Server/.idea/libraries/Maven__com_google_code_gson_gson_2_9_0.xml
 Server/target/test-classes/META-INF/server.kotlin_module
+Server/.idea/libraries/Maven__org_apache_maven_maven_embedder_3_1_0.xml
+Server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+Server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+Server/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+Server/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst
+Server/target/surefire-reports/main.web.AuthControllerTest.txt
+Server/target/surefire-reports/main.web.CustomersControllerTest.txt
+Server/target/surefire-reports/main.web.DataControllerTest.txt
+Server/target/surefire-reports/main.web.ReservationControllerTest.txt
+Server/target/surefire-reports/TEST-main.web.AuthControllerTest.xml
+Server/target/surefire-reports/TEST-main.web.CustomersControllerTest.xml
+Server/target/surefire-reports/TEST-main.web.DataControllerTest.xml
+Server/target/surefire-reports/TEST-main.web.ReservationControllerTest.xml
