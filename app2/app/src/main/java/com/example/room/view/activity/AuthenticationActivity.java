@@ -61,7 +61,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
             edit.putString("role", token.getRole());
             edit.apply();
         } catch (Exception ex) {
-            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "User is not found",Toast.LENGTH_LONG).show());
+            runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.userNotFound,Toast.LENGTH_LONG).show());
 
             return;
         }

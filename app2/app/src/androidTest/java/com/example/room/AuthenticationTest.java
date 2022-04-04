@@ -8,6 +8,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
@@ -20,11 +21,12 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class AuthenticationTest {
 
+    private final String login = "login";
+    private final String pwd = "pwd";
+
     @Test
-    public void customerRegistrationAndAuthorization_successfully() {
+    public void customerRegistration_successfully() {
         ActivityScenario.launch(AuthenticationActivity.class);
-        final String login = "login";
-        final String pwd = "pwd";
 
         onView(withId(R.id.sign_up_authentication_button))
                 .perform(click());
@@ -37,6 +39,13 @@ public class AuthenticationTest {
         onView(withId(R.id.sign_up_button))
                 .perform(click());
 
+        onView(withText(R.string.signedUp))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void customerAuthorization_successfully() {
         ActivityScenario.launch(AuthenticationActivity.class);
 
         onView(withId(R.id.authentication_editLogin)).perform(clearText(), typeText(login));
@@ -61,5 +70,9 @@ public class AuthenticationTest {
 
         onView(withId(R.id.text_home))
                 .check(doesNotExist());
+
+        onView(withText(R.string.userNotFound))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
     }
 }

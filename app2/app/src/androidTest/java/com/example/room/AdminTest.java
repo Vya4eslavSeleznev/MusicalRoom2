@@ -7,8 +7,10 @@ import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.allOf;
@@ -83,6 +85,10 @@ public class AdminTest {
 
         onView(withId(R.id.add_room_button))
                 .perform(click());
+
+        onView(withText(R.string.addedSuccessfully))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -129,6 +135,10 @@ public class AdminTest {
 
         onView(withId(R.id.add_instrument_button))
                 .perform(click());
+
+        onView(withText(R.string.addedSuccessfully))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -178,6 +188,10 @@ public class AdminTest {
 
         onView(withId(R.id.add_equipment_button))
                 .perform(click());
+
+        onView(withText(R.string.successful))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
     }
 
     @Test

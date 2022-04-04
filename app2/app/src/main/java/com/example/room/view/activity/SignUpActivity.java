@@ -52,10 +52,10 @@ public class SignUpActivity extends AppCompatActivity implements SignUpPresenter
             presenter.addCustomer(login.getText().toString(), password.getText().toString(),
                     name.getText().toString(), phone.getText().toString());
 
-            Toast.makeText(this, "Signed up successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.signedUp, Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(this, "Empty field", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.emptyField, Toast.LENGTH_SHORT).show();
         }
     }
 }
