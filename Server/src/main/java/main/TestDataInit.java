@@ -73,7 +73,7 @@ public class TestDataInit implements CommandLineRunner {
         Customer customer = new Customer("name", "+79643423523", customerUser);
         customerRepository.save(customer);
 
-        /*Reservation reservation1 = new Reservation(Date.valueOf("2021-12-10"), room1, customer);
+        Reservation reservation1 = new Reservation(Date.valueOf("2021-12-10"), room1, customer);
         Reservation reservation2 = new Reservation(Date.valueOf("2021-12-11"), room2, customer);
         Reservation reservation3 = new Reservation(Date.valueOf("2021-12-12"), room3, customer);
         Reservation reservation4 = new Reservation(Date.valueOf("2021-12-13"), room4, customer);
@@ -84,6 +84,6 @@ public class TestDataInit implements CommandLineRunner {
         reservationRepository.save(reservation3);
         reservationRepository.save(reservation4);
         reservationRepository.save(reservation5);
-        reservationRepository.save(reservation6);*/
+        reservationRepository.save(reservation6);
     }
 }

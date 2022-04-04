@@ -45,6 +45,8 @@
     <string name="not_confirmed">Not confirmed</string>
     <string name="confirmed">Confirmed</string>
     <string name="confirm">Confirm</string>
+    <string name="yes">Yes</string>
+    <string name="ok">OK</string>
 
     <string-array name="roles">
         <item>User</item>
