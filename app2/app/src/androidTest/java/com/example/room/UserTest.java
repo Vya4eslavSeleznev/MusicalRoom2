@@ -10,13 +10,10 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
+
+import static org.hamcrest.Matchers.anything;
 
 import android.view.View;
 
@@ -37,15 +34,13 @@ public class UserTest {
 
     @Test
     public void addCustomerReservation_successfully() {
-        final String room = "room1";
         userAuthentication();
 
         onView(withId(R.id.navigation_reserve))
                 .perform(click());
 
         onView(withId(R.id.roomSpinner)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is(room))).perform(click());
-        onView(withId(R.id.roomSpinner)).check(matches(withSpinnerText(containsString(room))));
+        onData(anything()).atPosition(0).perform(click());
 
         onView(withId(R.id.dateButton))
                 .perform(click());
@@ -71,15 +66,24 @@ public class UserTest {
         onView(withId(R.id.user_rooms_instrument_recyclerview))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
+        onView(withId(R.id.equipment_instrument_recyclerview))
+                .check(matches(isDisplayed()));
+
         pressBack();
 
         onView(withId(R.id.user_rooms_instrument_recyclerview))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
+        onView(withId(R.id.equipment_instrument_recyclerview))
+                .check(matches(isDisplayed()));
+
         pressBack();
 
         onView(withId(R.id.user_rooms_instrument_recyclerview))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
+
+        onView(withId(R.id.equipment_instrument_recyclerview))
+                .check(matches(isDisplayed()));
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.example.room;
 
-//import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
@@ -9,12 +8,8 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.anything;
 
 import android.view.View;
 
@@ -30,23 +25,8 @@ import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-//import android.support.test.rule.ActivityTestRule;
-
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class AdminTest {
-
-    //@Rule
-    //public final ActivityTestRule<RoomActivity> roomActivityRule = new ActivityTestRule<>(RoomActivity.class);
-
-    //private int getRVcount(){
-        //ActivityTestRule<RoomActivity> roomActivityRule = new ActivityTestRule<>(RoomActivity.class);
-        //RecyclerView recyclerView = roomActivityRule.getActivity().findViewById(R.id.room_recyclerview);
-        //return recyclerView.getAdapter().getItemCount();
-    //}
-
-
-
-
 
     @Test
     public void bookingConfirmation_successfully() {
@@ -101,26 +81,24 @@ public class AdminTest {
         onView(withId(R.id.view_rooms_button))
                 .perform(click());
 
-        ///if (getRVcount() > 0) {
-            onView(withId(R.id.room_recyclerview))
-                    .perform(RecyclerViewActions.actionOnItemAtPosition(0, new ViewAction() {
-                        @Override
-                        public Matcher<View> getConstraints() {
-                            return null;
-                        }
+        onView(withId(R.id.room_recyclerview))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, new ViewAction() {
+                    @Override
+                    public Matcher<View> getConstraints() {
+                        return null;
+                    }
 
-                        @Override
-                        public String getDescription() {
-                            return "Click on delete button";
-                        }
+                    @Override
+                    public String getDescription() {
+                        return "Click on delete button";
+                    }
 
-                        @Override
-                        public void perform(UiController uiController, View view) {
-                            View button = view.findViewById(R.id.admin_room_delete_button);
-                            button.performClick();
-                        }
-                    }));
-        //}
+                    @Override
+                    public void perform(UiController uiController, View view) {
+                        View button = view.findViewById(R.id.admin_room_delete_button);
+                        button.performClick();
+                    }
+                }));
     }
 
     @Test
@@ -179,12 +157,10 @@ public class AdminTest {
                 .perform(click());
 
         onView(withId(R.id.instrument_spinner)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("instrument_name1"))).perform(click());
-        onView(withId(R.id.instrument_spinner)).check(matches(withSpinnerText(containsString("instrument_name1"))));
+        onData(anything()).atPosition(0).perform(click());
 
         onView(withId(R.id.room_spinner)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("room2"))).perform(click());
-        onView(withId(R.id.room_spinner)).check(matches(withSpinnerText(containsString("room2"))));
+        onData(anything()).atPosition(0).perform(click());
 
         onView(withId(R.id.add_equipment_button))
                 .perform(click());
@@ -222,6 +198,36 @@ public class AdminTest {
                         button.performClick();
                     }
                 }));
+    }
+
+    @Test
+    public void addRoomWithEmptyFields_notSuccessfully() {
+        adminAuthentication();
+
+        onView(withId(R.id.navigation_room))
+                .perform(click());
+
+        onView(withId(R.id.add_room_button))
+                .perform(click());
+
+        onView(withText(R.string.emptyField))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void addInstrumentWithEmptyField_notSuccessfully() {
+        adminAuthentication();
+
+        onView(withId(R.id.navigation_instrument))
+                .perform(click());
+
+        onView(withId(R.id.add_instrument_button))
+                .perform(click());
+
+        onView(withText(R.string.emptyField))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
     }
 
     private void adminAuthentication() {

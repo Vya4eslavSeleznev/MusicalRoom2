@@ -21,9 +21,6 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4ClassRunner.class)
 public class AuthenticationTest {
 
-    private final String login = "login";
-    private final String pwd = "pwd";
-
     @Test
     public void customerRegistration_successfully() {
         ActivityScenario.launch(AuthenticationActivity.class);
@@ -33,8 +30,8 @@ public class AuthenticationTest {
 
         onView(withId(R.id.sign_up_editName)).perform(clearText(), typeText("testName"));
         onView(withId(R.id.sign_up_editPhone)).perform(clearText(), typeText("+79217778844"));
-        onView(withId(R.id.sign_up_editLogin)).perform(clearText(), typeText(login));
-        onView(withId(R.id.sign_up_editPassword)).perform(clearText(), typeText(pwd));
+        onView(withId(R.id.sign_up_editLogin)).perform(clearText(), typeText("login"));
+        onView(withId(R.id.sign_up_editPassword)).perform(clearText(), typeText("pwd"));
 
         onView(withId(R.id.sign_up_button))
                 .perform(click());
@@ -45,11 +42,26 @@ public class AuthenticationTest {
     }
 
     @Test
+    public void customerRegistrationWithEmptyFields_notSuccessfully() {
+        ActivityScenario.launch(AuthenticationActivity.class);
+
+        onView(withId(R.id.sign_up_authentication_button))
+                .perform(click());
+
+        onView(withId(R.id.sign_up_button))
+                .perform(click());
+
+        onView(withText(R.string.emptyField))
+                .inRoot(new ToastMatcher())
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
     public void customerAuthorization_successfully() {
         ActivityScenario.launch(AuthenticationActivity.class);
 
-        onView(withId(R.id.authentication_editLogin)).perform(clearText(), typeText(login));
-        onView(withId(R.id.authentication_editPassword)).perform(clearText(), typeText(pwd));
+        onView(withId(R.id.authentication_editLogin)).perform(clearText(), typeText("customer"));
+        onView(withId(R.id.authentication_editPassword)).perform(clearText(), typeText("password"));
 
         onView(withId(R.id.sign_in_button))
                 .perform(click());
