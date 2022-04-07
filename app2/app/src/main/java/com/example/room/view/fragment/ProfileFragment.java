@@ -76,10 +76,10 @@ public class ProfileFragment extends Fragment implements ProfilePresenter.View {
             presenter.updateCustomer(token, this.customer.getId(),
                     nameTextView.getText().toString(), phoneTextView.getText().toString());
 
-            Toast.makeText(getActivity(), "Updated successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.updatedSuccessfully, Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.emptyField, Toast.LENGTH_SHORT).show();
         }
     }
 

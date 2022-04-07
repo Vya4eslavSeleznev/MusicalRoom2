@@ -80,7 +80,7 @@ public class ReservationFragment extends Fragment implements ReservationPresente
 
         reservationButton.setOnClickListener(v -> {
             presenter.addReservation(selectedDate, roomId.get(currentPosition));
-            Toast.makeText(getActivity(), "Successful!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.successful, Toast.LENGTH_SHORT).show();
         });
 
         return root;

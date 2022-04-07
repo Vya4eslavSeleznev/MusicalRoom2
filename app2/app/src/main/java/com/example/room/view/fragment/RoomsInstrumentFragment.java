@@ -93,7 +93,7 @@ public class RoomsInstrumentFragment extends Fragment implements RoomsInstrument
                     (long) presenter.getRooms().get(roomCurrentPosition.value).getId(),
                     (long) presenter.getInstruments().get(instrumentCurrentPosition.value).getId());
 
-            Toast.makeText(context, "Successful!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.successful, Toast.LENGTH_SHORT).show();
         });
 
         viewEquipmentButton.setOnClickListener(v -> {

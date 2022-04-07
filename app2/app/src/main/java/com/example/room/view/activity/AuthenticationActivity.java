@@ -33,7 +33,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
         login = this.findViewById(R.id.authentication_editLogin);
         password = this.findViewById(R.id.authentication_editPassword);
         Button signInBtn = this.findViewById(R.id.sign_in_button);
-        Button signUpBtn = this.findViewById(R.id.sign_up_button);
+        Button signUpBtn = this.findViewById(R.id.sign_up_authentication_button);
         presenter = new AuthenticationPresenter(this, new Gateway());
         repository = new Repository();
 
@@ -61,7 +61,7 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
             edit.putString("role", token.getRole());
             edit.apply();
         } catch (Exception ex) {
-            runOnUiThread(() -> Toast.makeText(getApplicationContext(), "User is not found",Toast.LENGTH_LONG).show());
+            runOnUiThread(() -> Toast.makeText(getApplicationContext(), R.string.userNotFound,Toast.LENGTH_LONG).show());
 
             return;
         }

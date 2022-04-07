@@ -45,6 +45,14 @@
     <string name="not_confirmed">Not confirmed</string>
     <string name="confirmed">Confirmed</string>
     <string name="confirm">Confirm</string>
+    <string name="yes">Yes</string>
+    <string name="ok">OK</string>
+    <string name="userNotFound">User is not found</string>
+    <string name="signedUp">Signed up successfully!</string>
+    <string name="successful">Successful!</string>
+    <string name="updatedSuccessfully">Updated successfully!</string>
+    <string name="emptyField">Empty field</string>
+    <string name="addedSuccessfully">Added successfully!</string>
 
     <string-array name="roles">
         <item>User</item>

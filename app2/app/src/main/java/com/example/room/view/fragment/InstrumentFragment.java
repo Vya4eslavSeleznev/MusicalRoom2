@@ -70,10 +70,10 @@ public class InstrumentFragment extends Fragment implements InstrumentPresenter.
             presenter.addInstrument(token,
                     nameTextView.getText().toString(), descriptionTextView.getText().toString());
 
-            Toast.makeText(getActivity(), "Added successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.addedSuccessfully, Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(getActivity(), "Empty field", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.emptyField, Toast.LENGTH_SHORT).show();
         }
     }
 }
