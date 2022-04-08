@@ -98,7 +98,6 @@ app2/.idea/jarRepositories.xml
 app2/.idea/gradle.xml
 app2/app/.gitignore
 app2/.idea/compiler.xml
-app2/settings.gradle
 app2/gradle.properties
 app2/app/proguard-rules.pro
 app2/gradle/wrapper/gradle-wrapper.jar
