@@ -219,3 +219,6 @@ Server/target/surefire-reports/TEST-main.web.AuthControllerTest.xml
 Server/target/surefire-reports/TEST-main.web.CustomersControllerTest.xml
 Server/target/surefire-reports/TEST-main.web.DataControllerTest.xml
 Server/target/surefire-reports/TEST-main.web.ReservationControllerTest.xml
+Server/src/main/java/META-INF/MANIFEST.MF
+Server/src/main/java/main/security/Jwt.puml
+Server/.idea/artifacts/server_jar.xml
